@@ -192,8 +192,8 @@
         }
 
         .profile-pic {
-            width: 160px;
-            height: 160px;
+            width: 210px;
+            height: 210px;
             object-fit: cover;
             border-radius: 10px;
             border: 2px solid rgba(180, 210, 255, 0.9);
@@ -241,6 +241,52 @@
 
         .nav-sections a:hover {
             color: var(--accent);
+            background: var(--accent-soft);
+        }
+
+        /* ---------- TABLE OF CONTENTS ---------- */
+        .toc {
+            max-width: 880px;
+            margin: 28px auto 0 auto;
+            padding: 16px 22px;
+            background: var(--bg-elevated);
+            border-radius: 14px;
+            border: 1px solid var(--border-soft);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+        }
+
+        .toc-title {
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+
+        .toc-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc-list a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: var(--chip-bg);
+            color: var(--muted-text);
+            border: 1px solid transparent;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        .toc-list a:hover,
+        .toc-list a.is-active {
+            color: var(--accent);
+            border-color: var(--accent);
             background: var(--accent-soft);
         }
 
@@ -303,6 +349,12 @@
             border: 1px solid var(--border-soft);
         }
 
+        .course-desc {
+            margin: 6px 0 14px 0;
+            color: var(--muted-text);
+            font-size: 0.95rem;
+        }
+
         @media (max-width: 780px) {
             .section {
                 margin: 30px 10px;
@@ -356,6 +408,12 @@
         </div>
     </section>
 
+    <!-- DYNAMIC TABLE OF CONTENTS -->
+    <aside class="toc" aria-label="Table of contents">
+        <div class="toc-title">Table of contents</div>
+        <ul class="toc-list" id="tocList"></ul>
+    </aside>
+
     <!-- SECTION NAVIGATION -->
     <nav class="nav-sections">
         <a href="#about">About</a>
@@ -366,11 +424,13 @@
         <a href="#outreach">Outreach</a>
         <a href="#skills">Skills</a>
         <a href="#fieldwork">Fieldwork</a>
+        <a href="#supervision">Supervision</a>
+        <a href="#projects">Projects</a>
         <a href="#contact">Contact</a>
     </nav>
 
     <!-- ABOUT -->
-    <section class="section" id="about">
+    <section class="section" id="about" data-title="About">
         <h2>About</h2>
         <p>
             I am a PhD student in ecology and biogeography at the <strong>CRBE</strong>, Université Toulouse III – Paul Sabatier,
@@ -384,7 +444,7 @@
 
 
     <!-- RESEARCH -->
-    <section class="section" id="research">
+    <section class="section" id="research" data-title="Research">
         <h2>Research</h2>
         <p>
             My thesis examines how humans selectively exploit vertebrate species and how this selection translates into
@@ -410,26 +470,38 @@
 
 
     <!-- PUBLICATIONS -->
-    <section class="section" id="publications">
+    <section class="section" id="publications" data-title="Publications">
         <h2>Publications</h2>
     
     </section>
 
 
     <!-- TEACHING -->
-    <section class="section" id="teaching">
+    <section class="section" id="teaching" data-title="Teaching">
         <h2>Teaching</h2>
         <ul>
-            <li><strong>Zoology</strong> — 32 h/year (Licence 1)</li>
-            <li><strong>Aquatic Ecology</strong> — 15 h/year (Licence 3)</li>
-            <li><strong>Chemical Ecology</strong> — 15 h/year (Licence 3)</li>
-            <li><strong>General Ecology</strong> — 9 h/year (Licence 2)</li>
+            <li>
+                <strong>Zoology</strong> — 32 h/year (Licence 1)
+                <p class="course-desc">Introduction to animal diversity, major phyla, and the ecological roles of key groups.</p>
+            </li>
+            <li>
+                <strong>Aquatic Ecology</strong> — 15 h/year (Licence 3)
+                <p class="course-desc">Structure and functioning of freshwater ecosystems with emphasis on communities and trophic dynamics.</p>
+            </li>
+            <li>
+                <strong>Chemical Ecology</strong> — 15 h/year (Licence 3)
+                <p class="course-desc">Chemical communication, defense strategies, and interactions between organisms mediated by compounds.</p>
+            </li>
+            <li>
+                <strong>General Ecology</strong> — 9 h/year (Licence 2)
+                <p class="course-desc">Core ecological concepts including populations, communities, ecosystem processes, and conservation issues.</p>
+            </li>
         </ul>
     </section>
 
 
     <!-- TALKS -->
-    <section class="section" id="talks">
+    <section class="section" id="talks" data-title="Talks">
         <h2>Talks</h2>
         <ul>
             <li><strong>2025 – Ecology & Behaviour</strong><br>
@@ -443,7 +515,7 @@
 
 
     <!-- OUTREACH -->
-    <section class="section" id="outreach">
+    <section class="section" id="outreach" data-title="Outreach">
         <h2>Outreach</h2>
         <ul>
             <li><strong>Pint of Science</strong> — scientific outreach events.</li>
@@ -453,7 +525,7 @@
 
 
     <!-- SKILLS -->
-    <section class="section" id="skills">
+    <section class="section" id="skills" data-title="Skills">
         <h2>Skills</h2>
 
         <p class="section-subtitle">Methods & topics</p>
@@ -479,7 +551,7 @@
 
 
     <!-- FIELDWORK -->
-    <section class="section" id="fieldwork">
+    <section class="section" id="fieldwork" data-title="Fieldwork">
         <h2>Fieldwork</h2>
         <p>Examples of tropical freshwater fieldwork environments and sampling contexts.</p>
 
@@ -489,9 +561,33 @@
         </div>
     </section>
 
+    <!-- SUPERVISION -->
+    <section class="section" id="supervision" data-title="Supervision">
+        <h2>Supervision</h2>
+        <ul>
+            <li>
+                <strong>Pierre Bertrand</strong> — February 2026 - ongoing:
+                Intraspecific trait variation of freshwater fish from French Guiana — co-supervision.
+            </li>
+        </ul>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="section" id="projects" data-title="Projects">
+        <h2>Projects</h2>
+        <ul>
+            <li>
+                <strong>PhD</strong> : Diversité fonctionnelle des vertébrés et utilisation par l'homme: liens entre traits fonctionnels,
+                utilisation anthropique et crise de la biodiversité
+            </li>
+            <li>
+                <strong>INTRAIT</strong> : Intra-specific trait variability in freshwater fish, consortium project
+            </li>
+        </ul>
+    </section>
 
     <!-- CONTACT -->
-    <section class="section" id="contact">
+    <section class="section" id="contact" data-title="Contact">
         <h2>Contact</h2>
         <p>Email: <a href="mailto:pierre.bouchet@utoulouse.fr">pierre.bouchet@utoulouse.fr</a></p>
         <p class="muted">Feel free to reach out for collaborations or research inquiries.</p>
@@ -502,6 +598,8 @@
     <script>
         const toggle = document.getElementById('themeToggle');
         const body = document.body;
+        const tocList = document.getElementById('tocList');
+        const sections = Array.from(document.querySelectorAll('.section[data-title]'));
 
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'light') body.classList.add('light-theme');
@@ -510,6 +608,30 @@
             body.classList.toggle('light-theme');
             localStorage.setItem('theme', body.classList.contains('light-theme') ? 'light' : 'dark');
         });
+
+        sections.forEach((section) => {
+            const item = document.createElement('li');
+            const link = document.createElement('a');
+            link.href = `#${section.id}`;
+            link.textContent = section.dataset.title;
+            link.dataset.section = section.id;
+            item.appendChild(link);
+            tocList.appendChild(item);
+        });
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    const link = tocList.querySelector(`a[data-section="${entry.target.id}"]`);
+                    if (link) {
+                        link.classList.toggle('is-active', entry.isIntersecting);
+                    }
+                });
+            },
+            { rootMargin: '-35% 0px -55% 0px', threshold: 0 }
+        );
+
+        sections.forEach((section) => observer.observe(section));
     </script>
 
 </body>
