@@ -434,3 +434,64 @@ html[data-theme="light"] .kw-tags b { color: var(--ink-soft); }
   .axis-inner { grid-template-columns: 1fr; }
   .axis-block.flip .axis-inner > figure { order: 0; }
 }
+
+
+/* =========================================================
+   Research page — thesis, expandable axes, supervision
+   ========================================================= */
+
+.intro-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.6rem; }
+.intro-meta b {
+  font-family: var(--font-mono); font-size: 0.68rem; font-weight: 400;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--sand);
+  border: 1px solid var(--line-faint); background: var(--paper-2);
+  border-radius: 999px; padding: 0.35rem 0.85rem;
+}
+
+/* Thesis block */
+.thesis { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr); gap: clamp(1.6rem, 4vw, 3.2rem); align-items: center; }
+.thesis .frame-fig img { aspect-ratio: 3 / 2; }
+.thesis h2 { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.18; letter-spacing: -0.025em; margin: 0.6rem 0 1.1rem; }
+.thesis p { color: var(--ink-soft); }
+.thesis .tag { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sand); }
+
+/* Expandable axes */
+.acc { border-top: 1px solid var(--line); }
+.acc:last-of-type { border-bottom: 1px solid var(--line); }
+.acc summary {
+  list-style: none; cursor: pointer;
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1.35rem 0.4rem 1.35rem 0;
+  transition: padding-left 0.28s cubic-bezier(0.22,1,0.36,1), color 0.2s ease;
+}
+.acc summary::-webkit-details-marker { display: none; }
+.acc summary:hover { padding-left: 0.6rem; color: var(--crimson); }
+.acc .n { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.12em; color: var(--sand); flex: 0 0 auto; }
+.acc .t { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.1rem, 2.2vw, 1.4rem); letter-spacing: -0.02em; flex: 1 1 auto; }
+.acc .chev { flex: 0 0 auto; font-size: 1.1rem; color: var(--muted); transition: transform 0.3s cubic-bezier(0.22,1,0.36,1); }
+.acc[open] .chev { transform: rotate(45deg); }
+.acc[open] summary { color: var(--crimson); }
+
+.acc-body {
+  display: grid; grid-template-columns: minmax(0, 0.62fr) minmax(0, 1fr);
+  gap: clamp(1.2rem, 3vw, 2.4rem); align-items: start;
+  padding: 0 0 2rem; animation: accIn 0.4s cubic-bezier(0.22,1,0.36,1);
+}
+@keyframes accIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+.acc-body .frame-fig img { aspect-ratio: 3 / 2; }
+.acc-body p { color: var(--ink-soft); margin-bottom: 0.9rem; }
+.acc-body p:last-child { margin-bottom: 0; }
+
+/* Supervision */
+.sup { border-top: 1px solid var(--line); padding: 1.5rem 0; display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: clamp(1rem, 3vw, 2.5rem); }
+.sup:last-of-type { border-bottom: 1px solid var(--line); }
+.sup .who { font-family: var(--font-display); font-weight: 500; font-size: 1.05rem; }
+.sup .role { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin-top: 0.3rem; }
+.sup .what { color: var(--ink-soft); }
+.sup .what em { color: var(--ink); font-style: italic; }
+.sup .when { font-family: var(--font-mono); font-size: 0.66rem; color: var(--sand); margin-top: 0.5rem; display: block; }
+
+@media (max-width: 900px) {
+  .thesis, .acc-body, .sup { grid-template-columns: 1fr; }
+  .sup { gap: 0.5rem; }
+}
