@@ -94,7 +94,7 @@ a { color: inherit; }
 
 /* ---------- Hero ---------- */
 
-.hero { border-bottom: 1px solid var(--line); position: relative; overflow: hidden; }
+.hero { position: relative; overflow: hidden; }
 
 /* Forest backdrop: fixed pixel size, anchored under the title.
    Adjust background-size to scale it, background-position to move it. */
@@ -149,7 +149,7 @@ html[data-theme="light"] .frame { box-shadow: 0 1px 2px rgba(31,8,18,0.07), 0 18
 
 /* ---------- Interactive keywords ---------- */
 
-.keywords { border-bottom: 1px solid var(--line); padding: clamp(2rem, 4vw, 2.8rem) 0; }
+.keywords { padding: clamp(2rem, 4vw, 2.8rem) 0; }
 .kw-list { display: flex; flex-wrap: wrap; gap: 0.6rem; }
 .kw {
   font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase;
@@ -169,12 +169,11 @@ html[data-theme="light"] .frame { box-shadow: 0 1px 2px rgba(31,8,18,0.07), 0 18
 
 /* ---------- Large network links ---------- */
 
-.networks { border-bottom: 1px solid var(--line); padding: clamp(2.5rem, 5vw, 3.5rem) 0; }
+.networks { padding: clamp(2.5rem, 5vw, 3.5rem) 0; }
 .net-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0; }
 .net {
   display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem;
   text-decoration: none; padding: 1.05rem 0.4rem 1.05rem 0;
-  border-top: 1px solid var(--line);
   font-family: var(--font-display); font-size: 1.4rem; font-weight: 500; letter-spacing: -0.02em;
   transition: color 0.18s ease, padding-left 0.18s ease;
 }
@@ -352,7 +351,7 @@ html[data-theme="light"] .kw-tags b { color: var(--ink-soft); }
    Research page
    ========================================================= */
 
-.page-head { border-bottom: 1px solid var(--line); padding: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(2rem, 4vw, 3rem); }
+.page-head { padding: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(2rem, 4vw, 3rem); }
 .page-head h1 { font-size: clamp(2rem, 5vw, 3.2rem); }
 .page-head .lede { margin-top: 1.6rem; font-size: 1.06rem; max-width: 58ch; }
 
@@ -401,6 +400,10 @@ html[data-theme="light"] .kw-tags b { color: var(--ink-soft); }
 }
 .axis-links a:hover { border-color: var(--crimson); color: var(--crimson); }
 
+.frame-fig img {
+  width: 100%; height: auto; display: block;
+  aspect-ratio: 4 / 3; object-fit: cover;
+}
 .frame-fig {
   border-radius: 20px; overflow: hidden; background: var(--paper-2);
   box-shadow: 0 1px 2px rgba(0,0,0,0.30), 0 20px 44px -20px rgba(0,0,0,0.65);
@@ -495,3 +498,22 @@ html[data-theme="light"] .kw-tags b { color: var(--ink-soft); }
   .thesis, .acc-body, .sup { grid-template-columns: 1fr; }
   .sup { gap: 0.5rem; }
 }
+
+/* =========================================================
+   Organic section separators
+   A hand-drawn wave, tiled horizontally, replacing the straight rules
+   between major sections. Adjust --wave-size to change its frequency.
+   ========================================================= */
+
+.hero, .keywords, .networks, .page-head, .section { position: relative; border-bottom: none; }
+
+.networks::after, .page-head::after, .section::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0;
+  height: 9px; pointer-events: none;
+  background-color: var(--ink); opacity: 0.24;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20220%209%22%3E%3Cpath%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.4%22%20stroke-linecap%3D%22round%22%20d%3D%22M0%205.2%20C%2017%202.3%2034%207.7%2055%205%20S%2093%201.7%20110%204.9%20S%20149%208.5%20165%205.3%20S%20204%202.1%20220%205.2%22%2F%3E%3C%2Fsvg%3E"); mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20220%209%22%3E%3Cpath%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.4%22%20stroke-linecap%3D%22round%22%20d%3D%22M0%205.2%20C%2017%202.3%2034%207.7%2055%205%20S%2093%201.7%20110%204.9%20S%20149%208.5%20165%205.3%20S%20204%202.1%20220%205.2%22%2F%3E%3C%2Fsvg%3E");
+  -webkit-mask-repeat: repeat-x; mask-repeat: repeat-x;
+  -webkit-mask-size: 220px 9px; mask-size: 220px 9px;
+  -webkit-mask-position: left bottom; mask-position: left bottom;
+}
+main .section:last-of-type::after { display: none; }
