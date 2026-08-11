@@ -25,6 +25,216 @@
         <a href="research.html" aria-current="page">Research</a>
         <a href="publications.html">Publications</a>
         <a href="teaching.html">Teaching</a>
+        <a href="cv.html">CV</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <div style="display:flex; align-items:center; gap:0.8rem;">
+        <button class="menu-btn" aria-expanded="false">Menu</button>
+        <button class="theme-toggle" aria-label="Switch colour theme">&#9686;</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ---------- INTRO ---------- -->
+    <section class="page-head">
+      <div class="wrap">
+        <h1>Research</h1>
+        <p class="lede">
+          I am a third-year PhD student at the Centre de Recherche sur la Biodiversit&eacute; et
+          l'Environnement (CRBE), Universit&eacute; Toulouse III &mdash; Paul Sabatier, supervised by
+          Aur&egrave;le Toussaint and S&eacute;bastien Brosse.
+        </p>
+        <div class="intro-meta">
+          <b>Macroecology</b><b>Biodiversity</b><b>Functional traits</b>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- PhD ---------- -->
+    <section class="section reveal">
+      <div class="wrap thesis">
+        <figure class="frame-fig">
+          <img src="images/phd_1.jpg" alt="Freshwater fish sampling in the field" />
+        </figure>
+        <div>
+          <span class="tag">Doctoral thesis &middot; 2023&ndash;2026</span>
+          <h2>Functional diversity of vertebrates in a context of biodiversity crisis</h2>
+          <p>
+            My research uses a macroecological approach to study vertebrate species exploited by
+            humans in the context of the global biodiversity crisis. I identify functional traits
+            that favor or limit human use and examine how exploitation influences extinction risk
+            and invasion potential. I also investigate how trait&ndash;use relationships vary across
+            regions according to local and regional human practices, with the aim of informing
+            global conservation strategies.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- RESEARCH AXES (click to expand) ---------- -->
+    <section class="section reveal">
+      <div class="wrap">
+        <div class="section-head"><h2>Research axes</h2></div>
+
+        <details class="acc">
+          <summary>
+            <span class="n">01</span>
+            <span class="t">Macroecology</span>
+            <span class="chev">&#43;</span>
+          </summary>
+          <div class="acc-body">
+            <figure class="frame-fig">
+              <img src="images/axis_1.jpg" alt="Global map of species distributions" />
+            </figure>
+            <div>
+              <p>
+                I use global databases in my large-scale work. I examine patterns of biodiversity
+                across biogeographical domains and huge spatial scales. In my daily work, I use R to
+                perform statistical analyses and collect and harmonize databases.
+              </p>
+              <p>
+                I work with computing clusters, or supercomputers, and I adopt a reproducible
+                approach. My code is (often) publicly available on GitHub. I use QGIS as well.
+              </p>
+            </div>
+          </div>
+        </details>
+
+        <details class="acc">
+          <summary>
+            <span class="n">02</span>
+            <span class="t">Functional traits</span>
+            <span class="chev">&#43;</span>
+          </summary>
+          <div class="acc-body">
+            <figure class="frame-fig">
+              <img src="images/axis_2.jpg" alt="Morphological measurements on a fish specimen" />
+            </figure>
+            <div>
+              <p>
+                Species names and taxonomy teach us a great deal about species, but what interests
+                me is understanding their ecological strategy. How do they influence their
+                environment, what roles do they play, and how do they fit into the ecological
+                community? I find these approaches appealing, and trait-based ecology enables us to
+                answer these questions.
+              </p>
+              <p>
+                I work primarily with functional spaces that reflect, within a multidimensional
+                space, the full spectrum of traits of a group of organisms (across multiple possible
+                scales). I am also interested in the impact of intraspecific diversity on
+                communities.
+              </p>
+            </div>
+          </div>
+        </details>
+
+        <details class="acc">
+          <summary>
+            <span class="n">03</span>
+            <span class="t">Biodiversity and conservation</span>
+            <span class="chev">&#43;</span>
+          </summary>
+          <div class="acc-body">
+            <figure class="frame-fig">
+              <img src="images/axis_3.jpg" alt="Fish market, illustrating human use of aquatic vertebrates" />
+            </figure>
+            <div>
+              <p>
+                My research focus is biodiversity; it is what inspired me to write my PhD thesis and
+                become a researcher in ecology.
+              </p>
+              <p>
+                Faced with the global decline of life on Earth, I am interested in its conservation
+                &mdash; in how we can successfully halt the extinction of species and the erosion of
+                biodiversity. Through my research areas, I aim to provide solutions and
+                recommendations for the conservation and protection of life in all its integrity:
+                taxonomic, phylogenetic and functional.
+              </p>
+            </div>
+          </div>
+        </details>
+
+      </div>
+    </section>
+
+    <!-- ---------- SUPERVISION ---------- -->
+    <section class="section reveal">
+      <div class="wrap">
+        <div class="section-head"><h2>Supervision</h2></div>
+
+        <div class="sup">
+          <div>
+            <div class="who">Pierre Bertrand</div>
+            <div class="role">M2 internship &middot; co-supervision</div>
+          </div>
+          <div class="what">
+            <em>Intraspecific trait variation of freshwater fish from French Guiana</em>
+            <span class="when">February &ndash; July 2026</span>
+          </div>
+        </div>
+
+        <div class="sup">
+          <div>
+            <div class="who">Prudence Augier</div>
+            <div class="role">High school student &middot; exploratory internship</div>
+          </div>
+          <div class="what">
+            Introduction to the world of research and to the thesis process.
+            <span class="when">June 2026</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <span class="note">&copy; <span id="year"></span> Pierre Bouchet</span>
+      <div class="footer-links">
+        <a href="mailto:pierre.bouchet@utoulouse.fr">pierre.bouchet@utoulouse.fr</a>
+        <a href="mailto:pierrebdef@gmail.com">pierrebdef@gmail.com</a>
+        <a href="https://orcid.org/0009-0000-5907-9364">ORCID</a>
+        <a href="https://github.com/pierrolaloune">GitHub</a>
+        <a href="https://www.researchgate.net/profile/Pierre-Bouchet-2">ResearchGate</a>
+        <a href="https://www.linkedin.com/in/pierrebouchetprofile/">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+
+</html><!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Research — Pierre Bouchet</title>
+  <meta name="description" content="PhD research of Pierre Bouchet: functional diversity of vertebrates in a context of biodiversity crisis. Macroecology, functional traits, conservation." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600&family=Manrope:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231F0812'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Georgia,serif' font-size='34' fill='%23EEC170'%3EP%3C/text%3E%3C/svg%3E">
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="index.html">Pierre Bouchet</a>
+      <nav class="tabs" aria-label="Main">
+        <a href="index.html">Home</a>
+        <a href="research.html" aria-current="page">Research</a>
+        <a href="publications.html">Publications</a>
+        <a href="teaching.html">Teaching</a>
         <a href="field.html">Field</a>
         <a href="cv.html">CV</a>
         <a href="contact.html">Contact</a>
