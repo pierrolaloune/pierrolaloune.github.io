@@ -140,6 +140,50 @@
     }
   }
 
+
+  /* ---- Publications pulled from ORCID -----------------------------
+     The public ORCID API needs no key. Works you register on your ORCID
+     record appear here automatically, newest first. */
+  var box = document.getElementById("orcid-works");
+  if (box) {
+    var id = box.getAttribute("data-orcid");
+
+    fetch("https://pub.orcid.org/v3.0/" + id + "/works", { headers: { Accept: "application/json" } })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (data) {
+        var groups = (data && data.group) || [];
+
+        var items = groups.map(function (g) {
+          var s = g["work-summary"][0];
+          var year = s["publication-date"] && s["publication-date"].year
+            ? s["publication-date"].year.value : "";
+          var title = s.title && s.title.title ? s.title.title.value : "Untitled";
+          var venue = s["journal-title"] ? s["journal-title"].value : "";
+          var doi = "";
+          (g["external-ids"] && g["external-ids"]["external-id"] || []).forEach(function (e) {
+            if (e["external-id-type"] === "doi") doi = e["external-id-value"];
+          });
+          return { year: year, title: title, venue: venue, doi: doi };
+        }).sort(function (a, b) { return (b.year || 0) - (a.year || 0); });
+
+        if (!items.length) {
+          box.innerHTML = "";
+          return;
+        }
+
+        box.innerHTML = items.map(function (it) {
+          var links = it.doi
+            ? '<div class="pub-links"><a href="https://doi.org/' + it.doi + '" target="_blank" rel="noopener">DOI</a></div>'
+            : "";
+          return '<article class="pub"><div class="yr">' + it.year + '</div><div>' +
+                 "<h3>" + it.title + "</h3>" +
+                 (it.venue ? '<p class="venue">' + it.venue + "</p>" : "") +
+                 links + "</div></article>";
+        }).join("");
+      })
+      .catch(function () { box.innerHTML = ""; });
+  }
+
   /* Rotating keywords under the name.
      Edit the WORDS list below to change what cycles. */
   var rot = document.querySelector(".rotator");
