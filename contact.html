@@ -47,24 +47,32 @@
       <div class="wrap contact-grid">
 
         <!-- ---------- FORM ----------
-             Create a free form on formspree.io with your Gmail address,
-             then replace YOUR_FORM_ID below with the identifier it gives you.
-             Messages then arrive straight in your inbox. -->
-        <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-          <div class="field">
-            <label for="name">Name</label>
-            <input id="name" type="text" name="name" required>
-          </div>
-          <div class="field">
-            <label for="email">Email</label>
-            <input id="email" type="email" name="email" required>
-          </div>
-          <div class="field">
-            <label for="message">Message</label>
-            <textarea id="message" name="message" required></textarea>
-          </div>
-          <button class="send" type="submit">Send message</button>
-        </form>
+             Sent through Formspree (form xljrbwzr) by Ajax: the visitor stays
+             on this page and the confirmation appears below. -->
+        <div>
+          <div data-fs-success></div>
+          <div data-fs-error></div>
+
+          <form id="contact-form">
+            <div class="field">
+              <label for="name">Name</label>
+              <input id="name" type="text" name="name" data-fs-field required>
+              <span data-fs-error="name"></span>
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" type="email" name="email" data-fs-field required>
+              <span data-fs-error="email"></span>
+            </div>
+            <div class="field">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" data-fs-field required></textarea>
+              <span data-fs-error="message"></span>
+            </div>
+            <input type="hidden" name="_subject" value="Message from pierrolaloune.github.io">
+            <button class="send" type="submit" data-fs-submit-btn>Send message</button>
+          </form>
+        </div>
 
         <div class="contact-side">
           <div class="line">
@@ -106,6 +114,11 @@
     </div>
   </footer>
 
+  <script>
+    window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+    formspree('initForm', { formElement: '#contact-form', formId: 'xljrbwzr' });
+  </script>
+  <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
   <script src="assets/js/main.js"></script>
 </body>
 
