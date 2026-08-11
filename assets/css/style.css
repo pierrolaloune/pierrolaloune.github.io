@@ -324,3 +324,90 @@ html[data-theme="light"] .kw-tags b { color: var(--ink-soft); }
   .tabs.open { transform: none; }
   .tabs a { padding: 0.7rem 0; font-size: 0.78rem; width: 100%; }
 }
+
+/* =========================================================
+   Research page
+   ========================================================= */
+
+.page-head { border-bottom: 1px solid var(--line); padding: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(2rem, 4vw, 3rem); }
+.page-head h1 { font-size: clamp(2rem, 5vw, 3.2rem); }
+.page-head .lede { margin-top: 1.6rem; font-size: 1.06rem; max-width: 58ch; }
+
+/* In-page index of axes */
+.axis-index { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0; margin-top: 2.6rem; }
+.axis-index a {
+  display: block; text-decoration: none; padding: 1rem 1.2rem 1rem 0;
+  border-top: 1px solid var(--line);
+  transition: padding-left 0.28s cubic-bezier(0.22,1,0.36,1), border-color 0.25s ease;
+}
+.axis-index a:hover { padding-left: 0.6rem; border-top-color: var(--crimson); }
+.axis-index .num { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.12em; color: var(--sand); }
+.axis-index .ttl { display: block; font-family: var(--font-display); font-weight: 500; font-size: 1.05rem; letter-spacing: -0.015em; margin-top: 0.35rem; }
+
+/* Axis blocks */
+.axis-block { padding: clamp(3rem, 7vw, 5rem) 0; border-bottom: 1px solid var(--line); scroll-margin-top: calc(var(--header-h) + 1rem); }
+.axis-inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr); gap: clamp(1.8rem, 5vw, 4rem); align-items: start; }
+.axis-block.flip .axis-inner > figure { order: -1; }
+
+.axis-num { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.16em; color: var(--sand); }
+.axis-block h2 { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.5rem, 3.2vw, 2.1rem); line-height: 1.15; letter-spacing: -0.025em; margin: 0.7rem 0 1.1rem; }
+.axis-question {
+  font-size: 1.05rem; color: var(--ink); border-left: 2px solid var(--sand);
+  padding-left: 1rem; margin-bottom: 1.3rem;
+}
+.axis-block p { color: var(--ink-soft); margin-bottom: 1rem; }
+.axis-meta { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 1.3rem; }
+.axis-meta b {
+  font-family: var(--font-mono); font-size: 0.63rem; font-weight: 400;
+  letter-spacing: 0.09em; text-transform: uppercase; color: var(--sand);
+  border: 1px solid var(--line-faint); background: var(--paper-2);
+  border-radius: 999px; padding: 0.22rem 0.65rem;
+}
+.axis-status {
+  display: inline-block; margin-top: 1.2rem;
+  font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--crimson); border: 1px solid var(--crimson); border-radius: 999px; padding: 0.3rem 0.8rem;
+}
+.axis-status.soon { color: var(--muted); border-color: var(--line); }
+.axis-links { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.4rem; }
+.axis-links a {
+  font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase;
+  text-decoration: none; color: var(--ink-soft);
+  border: 1px solid var(--line); border-radius: 999px; padding: 0.42rem 0.9rem;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.axis-links a:hover { border-color: var(--crimson); color: var(--crimson); }
+
+.frame-fig {
+  border-radius: 20px; overflow: hidden; background: var(--paper-2);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.30), 0 20px 44px -20px rgba(0,0,0,0.65);
+  transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
+}
+.frame-fig:hover { transform: translateY(-3px); }
+.axis-inner figure img { width: 100%; display: block; aspect-ratio: 4 / 3; object-fit: cover; }
+.axis-inner figcaption { padding: 0 1rem 1rem; }
+.axis-inner figcaption { font-family: var(--font-mono); font-size: 0.68rem; line-height: 1.6; color: var(--muted); margin-top: 0.9rem; }
+
+/* Methods and tools */
+.tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: clamp(1.2rem, 3vw, 2.2rem); }
+.tool { border-top: 1px solid var(--line); padding-top: 1rem; }
+.tool h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.02rem; margin-bottom: 0.5rem; }
+.tool p { font-size: 0.92rem; color: var(--ink-soft); }
+.tool code {
+  font-family: var(--font-mono); font-size: 0.82rem; color: var(--sand);
+  background: var(--paper-2); padding: 0.05rem 0.35rem; border-radius: 4px;
+}
+
+/* Funding / collaborations */
+.partners { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.4rem; }
+.partners a, .partners span {
+  font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.07em;
+  color: var(--ink-soft); text-decoration: none;
+  border: 1px solid var(--line); border-radius: 999px; padding: 0.42rem 0.9rem;
+}
+.partners a:hover { border-color: var(--crimson); color: var(--crimson); }
+
+@media (max-width: 900px) {
+  .axis-inner { grid-template-columns: 1fr; }
+  .axis-block.flip .axis-inner > figure { order: 0; }
+}
