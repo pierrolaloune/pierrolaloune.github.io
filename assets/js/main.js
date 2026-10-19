@@ -141,9 +141,88 @@
   }
 
 
+  /* ---- My publications (assets/js/publications.js) ----------------
+     Newest first. The first one feeds the "New paper" block on the home
+     page; it reads "New paper" for a year, then "Latest paper". */
+  var PUBS = (window.PUBLICATIONS || []).slice().sort(function (a, b) {
+    return (b.date || "").localeCompare(a.date || "");
+  });
+
+  function pubLinks(p) {
+    var scholar = p.scholar ||
+      "https://scholar.google.com/scholar?q=" + encodeURIComponent('"' + p.title + '"');
+    var l = [];
+    if (p.doi) l.push('<a href="https://doi.org/' + p.doi + '" target="_blank" rel="noopener">Article</a>');
+    if (p.pdf) l.push('<a href="' + p.pdf + '" target="_blank" rel="noopener">PDF</a>');
+    if (p.code) l.push('<a href="' + p.code + '" target="_blank" rel="noopener">Code</a>');
+    if (p.data) l.push('<a href="' + p.data + '" target="_blank" rel="noopener">Data</a>');
+    l.push('<a href="' + scholar + '" target="_blank" rel="noopener">Google Scholar</a>');
+    return '<div class="pub-links">' + l.join("") + "</div>";
+  }
+
+  function codeNote(p) {
+    if (!p.code) return "";
+    var host = /github\.com/.test(p.code) ? "GitHub" : "an open repository";
+    return '<p class="code-note"><span aria-hidden="true">&lt;/&gt;</span> Code' +
+           (p.data ? " &amp; data" : "") + ' openly available on <a href="' + p.code +
+           '" target="_blank" rel="noopener">' + host + "</a>" +
+           (p.data ? ' &middot; archived on <a href="' + p.data + '" target="_blank" rel="noopener">Zenodo</a>' : "") +
+           "</p>";
+  }
+
+  function venue(p) {
+    return '<p class="venue">' + (p.journal || "") + (p.volume ? " &middot; " + p.volume : "") +
+           (p.date ? " &middot; " + p.date.slice(0, 4) : "") + "</p>";
+  }
+
+  var feat = document.getElementById("new-paper");
+  if (feat) {
+    if (!PUBS.length) {
+      feat.hidden = true;
+    } else {
+      var p = PUBS[0];
+      var ageDays = (Date.now() - new Date(p.date)) / 864e5;
+      feat.innerHTML =
+        '<div class="np-card">' +
+          (p.image ? '<figure class="np-img"><img src="' + p.image + '" alt="' + (p.imageAlt || "") + '" loading="lazy"></figure>' : "") +
+          '<div class="np-body">' +
+            '<span class="np-badge">' + (ageDays < 365 ? "New paper" : "Latest paper") + "</span>" +
+            "<h3>" + p.title + "</h3>" +
+            '<p class="authors">' + p.authors + "</p>" +
+            venue(p) +
+            (p.summary ? '<p class="np-summary">' + p.summary + "</p>" : "") +
+            codeNote(p) +
+            pubLinks(p) +
+          "</div>" +
+        "</div>";
+    }
+  }
+
+  var mine = document.getElementById("my-pubs");
+  if (mine) {
+    mine.innerHTML = PUBS.map(function (p) {
+      return '<article class="pub pub-rich" tabindex="0">' +
+               '<div class="yr">' + (p.date || "").slice(0, 4) + "</div>" +
+               "<div>" +
+                 "<h3>" + p.title + "</h3>" +
+                 '<p class="authors">' + p.authors + "</p>" +
+                 venue(p) +
+                 '<div class="pub-extra"><div>' +
+                   (p.summary ? '<p class="np-summary">' + p.summary + "</p>" : "") +
+                   codeNote(p) +
+                 "</div></div>" +
+                 pubLinks(p) +
+               "</div>" +
+               (p.image ? '<figure class="pub-img"><img src="' + p.image + '" alt="' + (p.imageAlt || "") + '" loading="lazy"></figure>' : "") +
+             "</article>";
+    }).join("");
+  }
+
   /* ---- Publications pulled from ORCID -----------------------------
      The public ORCID API needs no key. Works you register on your ORCID
-     record appear here automatically, newest first. */
+     record appear here automatically, newest first. Papers already in
+     publications.js are skipped. */
+  var known = PUBS.map(function (p) { return (p.doi || "").toLowerCase(); });
   var box = document.getElementById("orcid-works");
   if (box) {
     var id = box.getAttribute("data-orcid");
@@ -164,6 +243,8 @@
             if (e["external-id-type"] === "doi") doi = e["external-id-value"];
           });
           return { year: year, title: title, venue: venue, doi: doi };
+        }).filter(function (it) {
+          return known.indexOf(it.doi.toLowerCase()) === -1;
         }).sort(function (a, b) { return (b.year || 0) - (a.year || 0); });
 
         if (!items.length) {

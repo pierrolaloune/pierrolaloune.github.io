@@ -566,10 +566,67 @@ main .section:last-of-type::after { display: none; }
 }
 .pub .pub-links a:hover { border-color: var(--crimson); color: var(--crimson); }
 
+/* Papers from publications.js: same row, plus summary and image */
+/* Sober by default: small square thumbnail, summary hidden.
+   Hovering (or focusing) the entry opens the summary and enlarges the image. */
+.pub-rich { grid-template-columns: 90px minmax(0, 1fr) auto; outline: none; }
+.pub-img {
+  margin: 0; border-radius: 12px; overflow: hidden; background: var(--paper-2); align-self: start;
+  width: 84px; transition: width 0.45s cubic-bezier(0.22,1,0.36,1), border-radius 0.45s ease;
+}
+.pub-img img { width: 100%; display: block; aspect-ratio: 1 / 1; object-fit: cover; transition: aspect-ratio 0.45s ease; }
+.pub-rich:hover .pub-img, .pub-rich:focus-within .pub-img { width: 280px; border-radius: 16px; }
+.pub-rich:hover .pub-img img, .pub-rich:focus-within .pub-img img { aspect-ratio: 4 / 3; }
+.pub-extra { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 0.45s ease, opacity 0.35s ease; }
+.pub-extra > div { overflow: hidden; }
+.pub-rich:hover .pub-extra, .pub-rich:focus-within .pub-extra { grid-template-rows: 1fr; opacity: 1; }
+.pub-rich:hover h3, .pub-rich:focus-within h3 { color: var(--sand); }
+.pub-rich h3 { transition: color 0.25s ease; }
+/* Touch screens have no hover: show everything */
+@media (hover: none) {
+  .pub-extra { grid-template-rows: 1fr; opacity: 1; }
+}
+.np-summary { font-size: 0.95rem; line-height: 1.65; color: var(--ink-soft); margin-top: 0.9rem; max-width: 62ch; }
+.code-note { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); margin-top: 0.8rem; }
+.code-note span { color: var(--sand); margin-right: 0.35rem; }
+.code-note a { color: var(--ink-soft); }
+.code-note a:hover { color: var(--crimson); }
+
+/* "New paper" block on the home page */
+.new-paper { padding-bottom: 0; }
+.np-card {
+  display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(1.4rem, 4vw, 3rem);
+  border: 1px solid var(--line); border-radius: 26px; padding: clamp(1.1rem, 3vw, 1.8rem);
+  align-items: center;
+}
+.np-img { margin: 0; border-radius: 18px; overflow: hidden; background: var(--paper-2); }
+.np-img img { width: 100%; display: block; aspect-ratio: 4 / 3; object-fit: cover; }
+.np-badge {
+  display: inline-block; font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--paper); background: var(--crimson); border-radius: 999px; padding: 0.3rem 0.75rem; margin-bottom: 0.9rem;
+}
+.np-body h3 { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.25rem, 2.4vw, 1.6rem); line-height: 1.25; letter-spacing: -0.015em; }
+.np-body .authors { font-size: 0.92rem; color: var(--ink-soft); margin-top: 0.6rem; }
+.np-body .authors strong { color: var(--ink); }
+.np-body .venue { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); margin-top: 0.4rem; }
+.np-body .pub-links { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1rem; }
+.np-body .pub-links a {
+  font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase;
+  text-decoration: none; color: var(--ink-soft);
+  border: 1px solid var(--line); border-radius: 999px; padding: 0.35rem 0.8rem;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.np-body .pub-links a:hover { border-color: var(--crimson); color: var(--crimson); }
+
 #orcid-works .loading { font-family: var(--font-mono); font-size: 0.74rem; color: var(--muted); }
 
 @media (max-width: 900px) {
-  .pub { grid-template-columns: 1fr; gap: 0.4rem; }
+  .pub, .pub-rich { grid-template-columns: 1fr; gap: 0.4rem; }
+  .pub-rich { grid-template-columns: minmax(0, 1fr) auto; }
+  .pub-rich .yr { grid-column: 1 / -1; }
+  .pub-rich:hover .pub-img, .pub-rich:focus-within .pub-img { width: 84px; }
+  .pub-rich:hover .pub-img img, .pub-rich:focus-within .pub-img img { aspect-ratio: 1 / 1; }
+  .np-card { grid-template-columns: 1fr; }
   .head-split { grid-template-columns: 1fr; }
 }
 
