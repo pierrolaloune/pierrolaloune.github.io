@@ -593,7 +593,7 @@ main .section:last-of-type::after { display: none; }
 .code-note a:hover { color: var(--crimson); }
 
 /* "New paper" block on the home page */
-.new-paper { padding-bottom: 0; }
+.new-paper { padding-bottom: clamp(2.5rem, 6vw, 4rem); }
 .np-card {
   display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(1.4rem, 4vw, 3rem);
   border: 1px solid var(--line); border-radius: 26px; padding: clamp(1.1rem, 3vw, 1.8rem);
@@ -617,6 +617,21 @@ main .section:last-of-type::after { display: none; }
   transition: border-color 0.2s ease, color 0.2s ease;
 }
 .np-body .pub-links a:hover { border-color: var(--crimson); color: var(--crimson); }
+
+/* Format label on Communication entries (Talk, Poster...) */
+.pub .tag {
+  display: inline-block; margin-bottom: 0.5rem;
+  font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--sand); border: 1px solid var(--line); border-radius: 999px; padding: 0.22rem 0.65rem;
+}
+
+/* Country flags next to a venue. To add a country, copy a rule and draw its SVG (viewBox 3x2). */
+.flag {
+  display: inline-block; width: 1.35em; height: 0.9em; vertical-align: -0.1em; margin-left: 0.3em;
+  border-radius: 2px; background-size: cover; box-shadow: 0 0 0 1px var(--line);
+}
+.flag-fr { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 2'%3E%3Cpath fill='%23002654' d='M0 0h1v2H0z'/%3E%3Cpath fill='%23fff' d='M1 0h1v2H1z'/%3E%3Cpath fill='%23CE1126' d='M2 0h1v2H2z'/%3E%3C/svg%3E"); }
+.flag-dk { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 37 28'%3E%3Cpath fill='%23C8102E' d='M0 0h37v28H0z'/%3E%3Cpath fill='%23fff' d='M12 0h4v28h-4zM0 12h37v4H0z'/%3E%3C/svg%3E"); }
 
 #orcid-works .loading { font-family: var(--font-mono); font-size: 0.74rem; color: var(--muted); }
 
