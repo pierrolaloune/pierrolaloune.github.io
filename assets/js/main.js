@@ -154,7 +154,7 @@
     var l = [];
     if (p.doi) l.push('<a href="https://doi.org/' + p.doi + '" target="_blank" rel="noopener">Article</a>');
     if (p.pdf) l.push('<a href="' + p.pdf + '" target="_blank" rel="noopener">PDF</a>');
-    if (p.code) l.push('<a href="' + p.code + '" target="_blank" rel="noopener">Code</a>');
+    if (p.code) l.push('<a href="' + p.code + '" target="_blank" rel="noopener">' + (p.codeAndData ? "Code &amp; Data" : "Code") + "</a>");
     if (p.data) l.push('<a href="' + p.data + '" target="_blank" rel="noopener">Data</a>');
     l.push('<a href="' + scholar + '" target="_blank" rel="noopener">Google Scholar</a>');
     return '<div class="pub-links">' + l.join("") + "</div>";
@@ -164,7 +164,7 @@
     if (!p.code) return "";
     var host = /github\.com/.test(p.code) ? "GitHub" : "an open repository";
     return '<p class="code-note"><span aria-hidden="true">&lt;/&gt;</span> Code' +
-           (p.data ? " &amp; data" : "") + ' openly available on <a href="' + p.code +
+           (p.data || p.codeAndData ? " &amp; data" : "") + ' openly available on <a href="' + p.code +
            '" target="_blank" rel="noopener">' + host + "</a>" +
            (p.data ? ' &middot; archived on <a href="' + p.data + '" target="_blank" rel="noopener">Zenodo</a>' : "") +
            "</p>";

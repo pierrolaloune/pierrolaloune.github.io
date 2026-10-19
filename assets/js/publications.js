@@ -9,6 +9,8 @@
      doi       without https://doi.org/
      pdf       path to a file in /papers
      code      code repository (GitHub, Zenodo...)
+     codeAndData  true when the code repository also holds the data:
+               the button then reads "Code & Data"
      data      data archive
      image     featured image in /images
      summary   one or two sentences shown on the card
@@ -28,8 +30,9 @@ window.PUBLICATIONS = [
     doi: "10.1038/s41467-026-78568-9",
     pdf: "papers/Bouchet2026_NatCommun.pdf",
     code: "https://github.com/pierrolaloune/FishUsage",
+    codeAndData: true,
     image: "images/pub_bouchet2026.jpg",
     imageAlt: "Freshwater fishes used by humans: fish markets and an aquarium",
-    summary: "Humans use a quarter of freshwater fish species, and these species hold almost half of the global range of fish morphologies. Used species carry unique trait combinations that are often linked to threatened species, so losing them would erode the morphological spectrum in a non-random way."
+    summary: "Food, fish farming, angling or aquaria: humans use about a quarter of the world's freshwater fish species. In a new open-access paper in Nature Communications, led by PhD student Pierre Bouchet, we show with almost 9,000 species that each type of use targets its own body plans, that aquaculture and game fishing favour morphologically original species, and that losing the threatened ones would erode the global diversity of fish forms four times more than expected by chance."
   }
 ];
