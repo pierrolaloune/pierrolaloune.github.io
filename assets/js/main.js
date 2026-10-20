@@ -190,12 +190,75 @@
             "<h3>" + p.title + "</h3>" +
             '<p class="authors">' + p.authors + "</p>" +
             venue(p) +
-            (p.summary ? '<p class="np-summary">' + p.summary + "</p>" : "") +
+            '<p class="np-summary"></p>' +
             codeNote(p) +
             pubLinks(p) +
           "</div>" +
         "</div>";
+
+      /* The text is the abstract, read from the paper's PDF.
+         If it cannot be found, the summary from publications.js is shown. */
+      var npText = feat.querySelector(".np-summary");
+      var fallback = function () { if (p.summary) npText.innerHTML = p.summary; else npText.remove(); };
+      if (p.abstract) npText.textContent = p.abstract;
+      else if (p.pdf) pdfAbstract(p.pdf).then(function (a) { if (a) npText.textContent = a; else fallback(); }, fallback);
+      else fallback();
     }
+  }
+
+  /* ---- Abstract from a PDF ----------------------------------------
+     Reads page 1 with pdf.js. Journals set the abstract apart from the
+     body text, usually in another font size, so the abstract is the
+     longest unbroken block in a size other than the body's. If that
+     fails, it takes the text after an "Abstract" heading. The result is
+     kept in the browser so the PDF is read once per visitor. */
+  function pdfAbstract(url) {
+    var key = "abstract:" + url;
+    try { var hit = localStorage.getItem(key); if (hit) return Promise.resolve(hit); } catch (e) {}
+
+    var PDFJS = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/";
+    return new Promise(function (resolve, reject) {
+      if (window.pdfjsLib) return resolve();
+      var s = document.createElement("script");
+      s.src = PDFJS + "pdf.min.js";
+      s.onload = resolve; s.onerror = reject;
+      document.head.appendChild(s);
+    }).then(function () {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS + "pdf.worker.min.js";
+      return pdfjsLib.getDocument(url).promise;
+    }).then(function (doc) {
+      return doc.getPage(1);
+    }).then(function (page) {
+      return page.getTextContent();
+    }).then(function (tc) {
+      var size = function (it) { return String(Math.round(it.height * 10) / 10); };
+      var tidy = function (t) { return t.replace(/-\n(?=[a-z])/g, "").replace(/\s+/g, " ").trim(); };
+
+      var chars = {};
+      tc.items.forEach(function (it) { if (it.height) chars[size(it)] = (chars[size(it)] || 0) + it.str.length; });
+      var body = Object.keys(chars).sort(function (a, b) { return chars[b] - chars[a]; })[0];
+
+      var runs = [], cur = null, all = "";
+      tc.items.forEach(function (it) {
+        var txt = it.str + (it.hasEOL ? "\n" : "");
+        all += txt;
+        if (!it.height) { if (cur) cur.t += txt; return; }
+        if (!cur || cur.s !== size(it)) { cur = { s: size(it), t: "" }; runs.push(cur); }
+        cur.t += txt;
+      });
+
+      var best = runs.filter(function (r) { return r.s !== body; })
+                     .sort(function (a, b) { return b.t.length - a.t.length; })[0];
+      var text = best ? tidy(best.t) : "";
+
+      if (text.length < 300) {
+        var m = all.match(/\bAbstract\b[\s:.]*([\s\S]{300,2500}?)(?:\n\s*\n|\b(?:Keywords|Introduction|Main)\b)/i);
+        text = m ? tidy(m[1]) : "";
+      }
+      if (text.length < 300) return "";
+      try { localStorage.setItem(key, text); } catch (e) {}
+      return text;
+    });
   }
 
   var mine = document.getElementById("my-pubs");

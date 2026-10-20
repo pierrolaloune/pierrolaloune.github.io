@@ -13,7 +13,9 @@
                the button then reads "Code & Data"
      data      data archive
      image     featured image in /images
-     summary   one or two sentences shown on the card
+     summary   one or two sentences, shown on hover on the Publications page
+     abstract  only if needed: the "New paper" card reads the abstract
+               from the PDF by itself; fill this to override it
      scholar   your Google Scholar link for this paper; when absent the
                button runs a Google Scholar search on the exact title,
                which starts working as soon as Scholar indexes the paper.
@@ -33,6 +35,6 @@ window.PUBLICATIONS = [
     codeAndData: true,
     image: "images/pub_bouchet2026.jpg",
     imageAlt: "Freshwater fishes used by humans: fish markets and an aquarium",
-    summary: "Food, fish farming, angling or aquaria: humans use about a quarter of the world's freshwater fish species. In a new open-access paper in Nature Communications, led by PhD student Pierre Bouchet, we show with almost 9,000 species that each type of use targets its own body plans, that aquaculture and game fishing favour morphologically original species, and that losing the threatened ones would erode the global diversity of fish forms four times more than expected by chance."
+    summary: "Food, fish farming, angling or aquaria: humans use about a quarter of the world's freshwater fish species. In a new open-access paper in Nature Communications, we show with almost 9,000 species that each type of use targets its own body plans, that aquaculture and game fishing favour morphologically original species, and that losing the threatened ones would erode the global diversity of fish forms four times more than expected by chance."
   }
 ];
