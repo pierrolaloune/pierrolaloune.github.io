@@ -599,6 +599,21 @@ main .section:last-of-type::after { display: none; }
   border: 1px solid var(--line); border-radius: 26px; padding: clamp(1.1rem, 3vw, 1.8rem);
   align-items: center;
 }
+/* First page of the PDF: a sheet of paper, portrait, opens the PDF */
+.np-card.np-has-page { grid-template-columns: minmax(0, 0.62fr) minmax(0, 1.38fr); align-items: start; }
+.np-page {
+  display: block; border-radius: 6px; overflow: hidden; background: #fff;
+  aspect-ratio: 210 / 277; box-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 18px 40px -18px rgba(0,0,0,0.7);
+  transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+}
+.np-page:hover { transform: translateY(-4px) rotate(-0.6deg); }
+.np-page img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: top; }
+.np-page img:not([src]) { visibility: hidden; }
+@media (max-width: 900px) {
+  .np-card.np-has-page { grid-template-columns: 1fr; }
+  .np-page { max-width: 260px; }
+}
+
 .np-img { margin: 0; border-radius: 18px; overflow: hidden; background: var(--paper-2); }
 .np-img img { width: 100%; display: block; aspect-ratio: 4 / 3; object-fit: cover; }
 .np-badge {
