@@ -192,19 +192,11 @@
             "<h3>" + p.title + "</h3>" +
             '<p class="authors">' + p.authors + "</p>" +
             venue(p) +
-            '<p class="np-summary"></p>' +
+            (p.summary ? '<p class="np-summary">' + p.summary + "</p>" : "") +
             codeNote(p) +
             pubLinks(p) +
           "</div>" +
         "</div>";
-
-      /* The text is the abstract, read from the paper's PDF.
-         If it cannot be found, the summary from publications.js is shown. */
-      var npText = feat.querySelector(".np-summary");
-      var fallback = function () { if (p.summary) npText.innerHTML = p.summary; else npText.remove(); };
-      if (p.abstract) npText.textContent = p.abstract;
-      else if (p.pdf) pdfAbstract(p.pdf).then(function (a) { if (a) npText.textContent = a; else fallback(); }, fallback);
-      else fallback();
 
       /* The image is the first page of the PDF; the featured image
          is used if the page cannot be drawn. */
@@ -221,8 +213,7 @@
   }
 
   /* ---- Reading the PDF of a paper ---------------------------------
-     pdf.js is loaded only when needed, and page 1 is read once and
-     shared by the cover and the abstract. Both results are kept in the
+     pdf.js is loaded only when needed. The drawn page is kept in the
      browser, so each visitor reads the PDF only once. */
   function pdfPage1(url) {
     var pdfPages = pdfPage1.cache || (pdfPage1.cache = {});
@@ -262,44 +253,6 @@
           .then(function () { return canvas.toDataURL("image/jpeg", 0.82); });
       });
     });
-  }
-
-  /* Abstract: journals set it apart from the body text, usually in
-     another font size, so it is the longest unbroken block in a size
-     other than the body's. Failing that, the text after an "Abstract"
-     heading. */
-  function pdfAbstract(url) {
-    return cached("abstract:" + url, function () {
-      return pdfPage1(url).then(function (page) { return page.getTextContent(); }).then(abstractFromText);
-    });
-  }
-
-  function abstractFromText(tc) {
-    var size = function (it) { return String(Math.round(it.height * 10) / 10); };
-    var tidy = function (t) { return t.replace(/-\n(?=[a-z])/g, "").replace(/\s+/g, " ").trim(); };
-
-    var chars = {};
-    tc.items.forEach(function (it) { if (it.height) chars[size(it)] = (chars[size(it)] || 0) + it.str.length; });
-    var body = Object.keys(chars).sort(function (a, b) { return chars[b] - chars[a]; })[0];
-
-    var runs = [], cur = null, all = "";
-    tc.items.forEach(function (it) {
-      var txt = it.str + (it.hasEOL ? "\n" : "");
-      all += txt;
-      if (!it.height) { if (cur) cur.t += txt; return; }
-      if (!cur || cur.s !== size(it)) { cur = { s: size(it), t: "" }; runs.push(cur); }
-      cur.t += txt;
-    });
-
-    var best = runs.filter(function (r) { return r.s !== body; })
-                   .sort(function (a, b) { return b.t.length - a.t.length; })[0];
-    var text = best ? tidy(best.t) : "";
-
-    if (text.length < 300) {
-      var m = all.match(/\bAbstract\b[\s:.]*([\s\S]{300,2500}?)(?:\n\s*\n|\b(?:Keywords|Introduction|Main)\b)/i);
-      text = m ? tidy(m[1]) : "";
-    }
-    return text.length < 300 ? "" : text;
   }
 
   var mine = document.getElementById("my-pubs");

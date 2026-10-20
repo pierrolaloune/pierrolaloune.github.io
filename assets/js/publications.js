@@ -13,9 +13,8 @@
                the button then reads "Code & Data"
      data      data archive
      image     featured image in /images
-     summary   one or two sentences, shown on hover on the Publications page
-     abstract  only if needed: the "New paper" card reads the abstract
-               from the PDF by itself; fill this to override it
+     summary   a few sentences, shown on the "New paper" card and on
+               hover on the Publications page
      scholar   your Google Scholar link for this paper; when absent the
                button runs a Google Scholar search on the exact title,
                which starts working as soon as Scholar indexes the paper.
