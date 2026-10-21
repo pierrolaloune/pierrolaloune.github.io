@@ -324,6 +324,193 @@
       .catch(function () { box.innerHTML = ""; });
   }
 
+  /* ---- Topographic background --------------------------------------
+     A contour map, drawn from a noise "terrain", sits behind the page
+     and drifts slowly as you scroll (parallax).
+     Under the mouse, the contour line at that altitude is faintly
+     tinted. With reduced motion asked, only the still map is drawn.
+     Tuning: SCALE size of the relief, STEP spacing of the contours,
+     INDEX every n-th line is drawn heavier, PARALLAX scroll drift,
+     LINE / MAJOR / HOVER opacity of the lines. */
+  (function () {
+  var SCALE = 460, STEP = 0.042, INDEX = 5, CELL = 12, PARALLAX = 0.3;
+  var LINE = 0.032, MAJOR = 0.07, HOVER = 0.13;
+  var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* Classic Perlin noise with a fixed seed, so the map never changes. */
+  var perm = new Uint8Array(512);
+  (function () {
+    var p = [], s = 7;
+    for (var i = 0; i < 256; i++) p[i] = i;
+    for (i = 255; i > 0; i--) {
+      s = (s * 16807) % 2147483647;
+      var j = s % (i + 1), tmp = p[i]; p[i] = p[j]; p[j] = tmp;
+    }
+    for (i = 0; i < 512; i++) perm[i] = p[i & 255];
+  })();
+  var fade = function (t) { return t * t * t * (t * (t * 6 - 15) + 10); };
+  var grad = function (h, x, y) { return ((h & 1) ? -x : x) + ((h & 2) ? -y : y); };
+  function perlin(x, y) {
+    var X = Math.floor(x) & 255, Y = Math.floor(y) & 255;
+    x -= Math.floor(x); y -= Math.floor(y);
+    var u = fade(x), v = fade(y), a = perm[X] + Y, b = perm[X + 1] + Y;
+    var l1 = grad(perm[a], x, y) + u * (grad(perm[b], x - 1, y) - grad(perm[a], x, y));
+    var l2 = grad(perm[a + 1], x, y - 1) + u * (grad(perm[b + 1], x - 1, y - 1) - grad(perm[a + 1], x, y - 1));
+    return l1 + v * (l2 - l1);
+  }
+  /* Terrain height in 0..1 at a point of the map */
+  function height(mx, my) {
+    var x = mx / SCALE, y = my / SCALE, h = 0, amp = 0.55, f = 1;
+    for (var o = 0; o < 4; o++) { h += amp * perlin(x * f + o * 17.3, y * f - o * 9.1); amp *= 0.5; f *= 2.03; }
+    return Math.max(0, Math.min(1, h * 0.9 + 0.5));
+  }
+
+  var makeCanvas = function (cls) {
+    var c = document.createElement("canvas");
+    c.className = cls; c.setAttribute("aria-hidden", "true");
+    document.body.appendChild(c);
+    return c;
+  };
+  var tc = makeCanvas("topo-canvas"), tx = tc.getContext("2d");
+  var tdpr = 1, W = 0, H = 0, ink, amber, paths = [];
+  var offY = 0, base = 0, hover = -1, glow = {}, busy = false;
+
+  var readInk = function () {
+    var css = getComputedStyle(document.documentElement);
+    ink = css.getPropertyValue("--ink").trim();
+    amber = css.getPropertyValue("--orange").trim();
+  };
+
+  /* Performance: the map is drawn once on a canvas twice the height of
+     the screen (half a screen above, half below). Scrolling only slides
+     that canvas; it is redrawn when the slide nears its edge, i.e.
+     about every 1.5 screens of map, and never while idle. */
+  var mapTop = function () { return base - H / 2; };     // map y of canvas row 0
+
+  /* Marching squares: one Path2D per contour level. */
+  function build() {
+    base = offY;
+    var cols = Math.ceil(W / CELL) + 1, rows = Math.ceil(2 * H / CELL) + 1, top = mapTop();
+    var g = new Float32Array(cols * rows);
+    for (var j = 0; j < rows; j++)
+      for (var i = 0; i < cols; i++) g[j * cols + i] = height(i * CELL, j * CELL + top);
+
+    var nLev = Math.floor(1 / STEP);
+    paths = [];
+    for (var l = 0; l <= nLev; l++) paths.push(new Path2D());
+
+    for (j = 0; j < rows - 1; j++) {
+      for (i = 0; i < cols - 1; i++) {
+        var a = g[j * cols + i], b = g[j * cols + i + 1];
+        var c = g[(j + 1) * cols + i + 1], d = g[(j + 1) * cols + i];
+        var lo = Math.min(a, b, c, d), hi = Math.max(a, b, c, d);
+        var x0 = i * CELL, y0 = j * CELL;
+        for (l = Math.ceil(lo / STEP); l * STEP <= hi; l++) {
+          var Lv = l * STEP, pts = [];
+          if ((a < Lv) !== (b < Lv)) pts.push(x0 + CELL * (Lv - a) / (b - a), y0);
+          if ((b < Lv) !== (c < Lv)) pts.push(x0 + CELL, y0 + CELL * (Lv - b) / (c - b));
+          if ((d < Lv) !== (c < Lv)) pts.push(x0 + CELL * (Lv - d) / (c - d), y0 + CELL);
+          if ((a < Lv) !== (d < Lv)) pts.push(x0, y0 + CELL * (Lv - a) / (d - a));
+          var P = paths[l];
+          for (var k = 0; k + 3 < pts.length; k += 4) { P.moveTo(pts[k], pts[k + 1]); P.lineTo(pts[k + 2], pts[k + 3]); }
+        }
+      }
+    }
+    slide();
+    paint();
+  }
+
+  function slide() {
+    tc.style.transform = "translate3d(0," + (base - offY) + "px,0)";
+  }
+
+  function paint() {
+    tx.setTransform(tdpr, 0, 0, tdpr, 0, 0);
+    tx.clearRect(0, 0, W, 2 * H);
+    tx.strokeStyle = ink;
+    paths.forEach(function (P, l) {
+      var major = l % INDEX === 0;
+      tx.globalAlpha = major ? MAJOR : LINE;
+      tx.lineWidth = major ? 1 : 0.6;
+      tx.stroke(P);
+    });
+    tx.strokeStyle = amber;
+    tx.lineWidth = 0.8;
+    for (var l in glow) {
+      if (glow[l] < 0.01 || !paths[l]) continue;
+      tx.globalAlpha = glow[l] * HOVER;
+      tx.stroke(paths[l]);
+    }
+    tx.globalAlpha = 1;
+  }
+
+  function tick() {
+    var moving = false;
+    for (var l in glow) {
+      var target = +l === hover ? 1 : 0;
+      glow[l] += (target - glow[l]) * 0.12;
+      if (Math.abs(target - glow[l]) > 0.01) moving = true;
+      else if (!target) delete glow[l];
+    }
+    paint();
+    if (moving) requestAnimationFrame(tick);
+    else busy = false;
+  }
+  function kick() { if (!busy) { busy = true; requestAnimationFrame(tick); } }
+
+  var tsize = function () {
+    tdpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    W = innerWidth; H = innerHeight;
+    tc.width = W * tdpr; tc.height = 2 * H * tdpr;
+    tc.style.width = W + "px"; tc.style.height = 2 * H + "px"; tc.style.top = -H / 2 + "px";
+    offY = still ? 0 : window.scrollY * PARALLAX;
+    build();
+  };
+
+  readInk();
+  tsize();
+  /* Redraw on a real resize only: phones change the height a little
+     when the address bar shows or hides. */
+  var resizeTimer;
+  window.addEventListener("resize", function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      if (innerWidth !== W || Math.abs(innerHeight - H) > 120) tsize();
+    }, 150);
+  });
+  new MutationObserver(function () { readInk(); paint(); })
+    .observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+  if (!still) {
+    var scrollQueued = false;
+    window.addEventListener("scroll", function () {
+      if (scrollQueued) return;
+      scrollQueued = true;
+      requestAnimationFrame(function () {
+        scrollQueued = false;
+        offY = window.scrollY * PARALLAX;
+        if (Math.abs(offY - base) > H * 0.45) build(); else slide();
+      });
+    }, { passive: true });
+
+    var CARDS = ".np-card, .teach, .pub-rich";
+    document.addEventListener("pointermove", function (e) {
+      if (e.pointerType === "mouse") {
+        var lev = Math.round(height(e.clientX, e.clientY + offY) / STEP);
+        if (lev !== hover) { hover = lev; if (!(lev in glow)) glow[lev] = 0; kick(); }
+      }
+      var card = e.target.closest && e.target.closest(CARDS);
+      if (card) {
+        var r = card.getBoundingClientRect();
+        card.style.setProperty("--mx", (e.clientX - r.left) + "px");
+        card.style.setProperty("--my", (e.clientY - r.top) + "px");
+      }
+    }, { passive: true });
+    document.documentElement.addEventListener("mouseleave", function () { hover = -1; kick(); });
+  }
+
+  })();
+
   /* Rotating keywords under the name.
      Edit the WORDS list below to change what cycles. */
   var rot = document.querySelector(".rotator");
