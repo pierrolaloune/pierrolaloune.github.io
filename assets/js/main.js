@@ -255,19 +255,21 @@
     });
   }
 
+  /* Title linked to the article (DOI, else the PDF). */
+  function pubTitle(title, url) {
+    return "<h3>" + (url ? '<a href="' + url + '" target="_blank" rel="noopener">' + title + "</a>" : title) + "</h3>";
+  }
+
+  /* The summary lives on the home page; here, just the paper. */
   var mine = document.getElementById("my-pubs");
   if (mine) {
     mine.innerHTML = PUBS.map(function (p) {
-      return '<article class="pub pub-rich" tabindex="0">' +
+      return '<article class="pub pub-rich">' +
                '<div class="yr">' + (p.date || "").slice(0, 4) + "</div>" +
                "<div>" +
-                 "<h3>" + p.title + "</h3>" +
+                 pubTitle(p.title, p.doi ? "https://doi.org/" + p.doi : p.pdf) +
                  '<p class="authors">' + p.authors + "</p>" +
                  venue(p) +
-                 '<div class="pub-extra"><div>' +
-                   (p.summary ? '<p class="np-summary">' + p.summary + "</p>" : "") +
-                   codeNote(p) +
-                 "</div></div>" +
                  pubLinks(p) +
                "</div>" +
                (p.image ? '<figure class="pub-img"><img src="' + p.image + '" alt="' + (p.imageAlt || "") + '" loading="lazy"></figure>' : "") +
@@ -314,7 +316,7 @@
             ? '<div class="pub-links"><a href="https://doi.org/' + it.doi + '" target="_blank" rel="noopener">DOI</a></div>'
             : "";
           return '<article class="pub"><div class="yr">' + it.year + '</div><div>' +
-                 "<h3>" + it.title + "</h3>" +
+                 pubTitle(it.title, it.doi ? "https://doi.org/" + it.doi : "") +
                  (it.venue ? '<p class="venue">' + it.venue + "</p>" : "") +
                  links + "</div></article>";
         }).join("");

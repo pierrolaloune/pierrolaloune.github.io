@@ -13,8 +13,8 @@
                the button then reads "Code & Data"
      data      data archive
      image     featured image in /images
-     summary   a few sentences, shown on the "New paper" card and on
-               hover on the Publications page
+     summary   a few sentences, shown on the "New paper" card of the
+               home page
      scholar   your Google Scholar link for this paper; when absent the
                button runs a Google Scholar search on the exact title,
                which starts working as soon as Scholar indexes the paper.
