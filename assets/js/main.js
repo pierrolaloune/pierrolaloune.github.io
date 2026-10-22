@@ -71,11 +71,11 @@
 
 
   /* ---- Photos ----------------------------------------------------
-     Files are images/profile_1.jpg ... images/profile_8.jpg
-     Change PHOTO_COUNT if you add or remove photos.
+     Files are images/profile_1.webp ... images/profile_8.webp
+     (1280x1600). Change PHOTO_COUNT if you add or remove photos.
      One is drawn at random for the hero; the others fill the carousel. */
   var PHOTO_BASE = "images/profile_";
-  var PHOTO_EXT = ".jpg";
+  var PHOTO_EXT = ".webp";
   var PHOTO_COUNT = 8;
 
   var heroImg = document.getElementById("hero-photo");
@@ -95,8 +95,8 @@
     if (carTrack) {
       var rest = heroImg ? all.filter(function (n) { return n !== pick; }) : all;
       carTrack.innerHTML = rest.map(function (n) {
-        return '<figure class="frame"><img loading="lazy" src="' + PHOTO_BASE + n + PHOTO_EXT +
-               '" alt="Pierre Bouchet, photograph ' + n + '"></figure>';
+        return '<figure class="frame"><img loading="lazy" decoding="async" width="1280" height="1600" src="' +
+               PHOTO_BASE + n + PHOTO_EXT + '" alt="Pierre Bouchet, photograph ' + n + '"></figure>';
       }).join("");
     }
   }

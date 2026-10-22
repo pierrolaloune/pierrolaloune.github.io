@@ -32,7 +32,7 @@ window.PUBLICATIONS = [
     pdf: "papers/Bouchet2026_NatCommun.pdf",
     code: "https://github.com/pierrolaloune/FishUsage",
     codeAndData: true,
-    image: "images/pub_bouchet2026.jpg",
+    image: "images/pub_bouchet2026.webp",
     imageAlt: "Freshwater fishes used by humans: fish markets and an aquarium",
     summary: "Food, fish farming, angling or aquaria: humans use about a quarter of the world's freshwater fish species. In a new open-access paper in Nature Communications, we show with almost 9,000 species that each type of use targets its own body plans, that aquaculture and game fishing favour morphologically original species, and that losing the threatened ones would erode the global diversity of fish forms four times more than expected by chance."
   }
