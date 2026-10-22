@@ -2,6 +2,11 @@
 
 (function () {
   var root = document.documentElement;
+
+  /* Pages under /fr/ have <html lang="fr">: t("English", "Français")
+     picks the text in the page language. */
+  var FR = root.lang === "fr";
+  function t(en, fr) { return FR ? fr : en; }
   var saved = localStorage.getItem("theme");
   root.setAttribute("data-theme", saved || "dark");
 
@@ -74,7 +79,7 @@
      Files are images/profile_1.webp ... images/profile_8.webp
      (1280x1600). Change PHOTO_COUNT if you add or remove photos.
      One is drawn at random for the hero; the others fill the carousel. */
-  var PHOTO_BASE = "images/profile_";
+  var PHOTO_BASE = "/images/profile_";
   var PHOTO_EXT = ".webp";
   var PHOTO_COUNT = 8;
 
@@ -96,7 +101,7 @@
       var rest = heroImg ? all.filter(function (n) { return n !== pick; }) : all;
       carTrack.innerHTML = rest.map(function (n) {
         return '<figure class="frame"><img loading="lazy" decoding="async" width="1280" height="1600" src="' +
-               PHOTO_BASE + n + PHOTO_EXT + '" alt="Pierre Bouchet, photograph ' + n + '"></figure>';
+               PHOTO_BASE + n + PHOTO_EXT + '" alt="Pierre Bouchet, ' + t("photograph ", "photo ") + n + '"></figure>';
       }).join("");
     }
   }
@@ -154,8 +159,8 @@
     var l = [];
     if (p.doi) l.push('<a href="https://doi.org/' + p.doi + '" target="_blank" rel="noopener">Article</a>');
     if (p.pdf) l.push('<a href="' + p.pdf + '" target="_blank" rel="noopener">PDF</a>');
-    if (p.code) l.push('<a href="' + p.code + '" target="_blank" rel="noopener">' + (p.codeAndData ? "Code &amp; Data" : "Code") + "</a>");
-    if (p.data) l.push('<a href="' + p.data + '" target="_blank" rel="noopener">Data</a>');
+    if (p.code) l.push('<a href="' + p.code + '" target="_blank" rel="noopener">' + (p.codeAndData ? t("Code &amp; Data", "Code &amp; donn&eacute;es") : "Code") + "</a>");
+    if (p.data) l.push('<a href="' + p.data + '" target="_blank" rel="noopener">' + t("Data", "Donn&eacute;es") + "</a>");
     if (p.behind) l.push('<a href="' + p.behind + '" target="_blank" rel="noopener">Behind the paper</a>');
     l.push('<a href="' + scholar + '" target="_blank" rel="noopener">Google Scholar</a>');
     return '<div class="pub-links">' + l.join("") + "</div>";
@@ -163,13 +168,20 @@
 
   function codeNote(p) {
     if (!p.code) return "";
-    var host = /github\.com/.test(p.code) ? "GitHub" : "an open repository";
-    return '<p class="code-note"><span aria-hidden="true">&lt;/&gt;</span> Code' +
-           (p.data || p.codeAndData ? " &amp; data" : "") + ' openly available on <a href="' + p.code +
-           '" target="_blank" rel="noopener">' + host + "</a>" +
-           (p.data ? ' &middot; archived on <a href="' + p.data + '" target="_blank" rel="noopener">Zenodo</a>' : "") +
+    var host = /github\.com/.test(p.code) ? "GitHub" : t("an open repository", "un d&eacute;p&ocirc;t ouvert");
+    var withData = p.data || p.codeAndData;
+    return '<p class="code-note"><span aria-hidden="true">&lt;/&gt;</span> ' +
+           (withData ? t("Code &amp; data openly available on ", "Code et donn&eacute;es en libre acc&egrave;s sur ")
+                     : t("Code openly available on ", "Code en libre acc&egrave;s sur ")) +
+           '<a href="' + p.code + '" target="_blank" rel="noopener">' + host + "</a>" +
+           (p.data ? " &middot; " + t("archived on ", "archiv&eacute;s sur ") +
+                     '<a href="' + p.data + '" target="_blank" rel="noopener">Zenodo</a>' : "") +
            "</p>";
   }
+
+  /* French summary and image text when the paper has them. */
+  function summary(p) { return (FR && p.summary_fr) || p.summary; }
+  function imgAlt(p) { return (FR && p.imageAlt_fr) || p.imageAlt || ""; }
 
   function venue(p) {
     return '<p class="venue">' + (p.journal || "") + (p.volume ? " &middot; " + p.volume : "") +
@@ -186,14 +198,15 @@
       feat.innerHTML =
         '<div class="np-card' + (p.pdf ? " np-has-page" : "") + '">' +
           (p.pdf
-            ? '<a class="np-page" href="' + p.pdf + '" target="_blank" rel="noopener" aria-label="Open the PDF"><img alt="First page of the article"></a>'
-            : (p.image ? '<figure class="np-img"><img src="' + p.image + '" alt="' + (p.imageAlt || "") + '" loading="lazy"></figure>' : "")) +
+            ? '<a class="np-page" href="' + p.pdf + '" target="_blank" rel="noopener" aria-label="' + t("Open the PDF", "Ouvrir le PDF") +
+              '"><img alt="' + t("First page of the article", "Premi&egrave;re page de l&rsquo;article") + '"></a>'
+            : (p.image ? '<figure class="np-img"><img src="' + p.image + '" alt="' + imgAlt(p) + '" loading="lazy"></figure>' : "")) +
           '<div class="np-body">' +
-            '<span class="np-badge">' + (ageDays < 365 ? "New paper" : "Latest paper") + "</span>" +
+            '<span class="np-badge">' + (ageDays < 365 ? t("New paper", "Nouvel article") : t("Latest paper", "Dernier article")) + "</span>" +
             "<h3>" + p.title + "</h3>" +
             '<p class="authors">' + p.authors + "</p>" +
             venue(p) +
-            (p.summary ? '<p class="np-summary">' + p.summary + "</p>" : "") +
+            (summary(p) ? '<p class="np-summary">' + summary(p) + "</p>" : "") +
             codeNote(p) +
             pubLinks(p) +
           "</div>" +
@@ -205,7 +218,7 @@
       if (cover) {
         var coverImg = cover.querySelector("img");
         pdfCover(p.pdf).then(function (src) { coverImg.src = src; }, function () {
-          if (p.image) cover.outerHTML = '<figure class="np-img"><img src="' + p.image + '" alt="' + (p.imageAlt || "") + '"></figure>';
+          if (p.image) cover.outerHTML = '<figure class="np-img"><img src="' + p.image + '" alt="' + imgAlt(p) + '"></figure>';
           else cover.remove();
           feat.querySelector(".np-card").classList.remove("np-has-page");
         });
@@ -273,12 +286,18 @@
                  venue(p) +
                  pubLinks(p) +
                "</div>" +
-               (p.image ? '<figure class="pub-img"><img src="' + p.image + '" alt="' + (p.imageAlt || "") + '" loading="lazy"></figure>' : "") +
+               (p.image ? '<figure class="pub-img"><img src="' + p.image + '" alt="' + imgAlt(p) + '" loading="lazy"></figure>' : "") +
              "</article>";
     }).join("");
   }
 
-  /* Manuscripts not published yet (window.IN_PROGRESS). */
+  /* Manuscripts not published yet (window.IN_PROGRESS). The usual
+     statuses are translated on the French pages. */
+  function status(s) {
+    var fr = { "In preparation": "En pr&eacute;paration", "Submitted": "Soumis", "In review": "En &eacute;valuation" };
+    if (!s) return t("In progress", "En cours");
+    return (FR && fr[s]) || s;
+  }
   var wip = document.getElementById("in-progress");
   var WIP = window.IN_PROGRESS || [];
   if (wip) {
@@ -289,7 +308,7 @@
         return '<article class="pub">' +
                  '<div class="yr">' + (p.year || "") + "</div>" +
                  "<div>" +
-                   '<span class="tag">' + (p.status || "In progress") + "</span>" +
+                   '<span class="tag">' + status(p.status) + "</span>" +
                    "<h3>" + p.title + "</h3>" +
                    '<p class="authors">' + p.authors + "</p>" +
                    (p.journal ? '<p class="venue">' + p.journal + "</p>" : "") +

@@ -1,0 +1,93 @@
+---
+lang: "fr"
+title: "Publications — Pierre Bouchet"
+description: "Publications, travaux en cours et communications en colloque de Pierre Bouchet, doctorant au CRBE à Toulouse."
+---
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+
+<head>
+  {% include head.html %}
+</head>
+
+<body>
+  {% include header.html active="publications" %}
+
+  <main id="main">
+
+    <section class="page-head">
+      <div class="wrap">
+        <h1>Publications</h1>
+        <p class="lede">
+          Également sur <a href="https://scholar.google.com/citations?user=_AVxiGsAAAAJ" target="_blank" rel="noopener">Google Scholar</a>
+          et <a href="https://orcid.org/0009-0000-5907-9364" target="_blank" rel="noopener">ORCID</a>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ---------- MES ARTICLES ----------
+         Générés depuis assets/js/publications.js. Les titres restent en anglais. -->
+    <section class="section reveal">
+      <div class="wrap">
+        <div class="section-head"><h2>Publiés</h2></div>
+        <div id="my-pubs"></div>
+      </div>
+    </section>
+
+    <!-- ---------- LISTE AUTOMATIQUE DEPUIS ORCID ---------- -->
+    <section class="section reveal">
+      <div class="wrap">
+        <div id="orcid-works" data-orcid="0009-0000-5907-9364">
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- EN COURS ----------
+         Généré depuis window.IN_PROGRESS dans assets/js/publications.js.
+         La section reste cachée tant que la liste est vide. -->
+    <section class="section reveal">
+      <div class="wrap">
+        <div class="section-head"><h2>En cours</h2></div>
+        <div id="in-progress"></div>
+      </div>
+    </section>
+
+    <!-- ---------- COMMUNICATIONS ----------
+         Version courte de la liste des colloques de communication.html :
+         ajouter une communication ici et là-bas, la plus récente en premier. -->
+    <section class="section reveal">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Communications en colloque</h2>
+          <a class="more" href="/fr/communication.html">Colloques &amp; médiation &rarr;</a>
+        </div>
+
+        <article class="pub">
+          <div class="yr">Sept. 2026</div>
+          <div>
+            <span class="tag">Présentation orale</span>
+            <h3>Human targeting of morphologically unique fishes amplifies the risk of functional erosion</h3>
+            <p class="venue">NSO &ndash; GfÖ Ecology conference &middot; Odense, Danemark</p>
+          </div>
+        </article>
+
+        <article class="pub">
+          <div class="yr">Août 2025</div>
+          <div>
+            <span class="tag">Présentation orale</span>
+            <h3>Threatened freshwater fish used by humans support unique morphological traits</h3>
+            <p class="venue">Ecology &amp; Behaviour &middot; Montpellier, France</p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+  </main>
+
+  {% include footer.html %}
+  <script src="/assets/js/publications.js"></script>
+  <script src="/assets/js/main.js"></script>
+</body>
+
+</html>

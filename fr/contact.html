@@ -1,0 +1,89 @@
+---
+lang: "fr"
+title: "Contact — Pierre Bouchet"
+description: "Contacter Pierre Bouchet, doctorant au CRBE à Toulouse."
+---
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+
+<head>
+  {% include head.html %}
+</head>
+
+<body>
+  {% include header.html active="contact" %}
+
+  <main id="main">
+
+    <section class="page-head">
+      <div class="wrap">
+        <h1>Contact</h1>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="wrap contact-grid">
+
+        <!-- ---------- FORMULAIRE ----------
+             Envoyé par Formspree (formulaire xljrbwzr), comme sur la page anglaise. -->
+        <div>
+          <div data-fs-success></div>
+          <div data-fs-error></div>
+
+          <form id="contact-form">
+            <div class="field">
+              <label for="name">Nom</label>
+              <input id="name" type="text" name="name" data-fs-field required>
+              <span data-fs-error="name"></span>
+            </div>
+            <div class="field">
+              <label for="email">E-mail</label>
+              <input id="email" type="email" name="email" data-fs-field required>
+              <span data-fs-error="email"></span>
+            </div>
+            <div class="field">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" data-fs-field required></textarea>
+              <span data-fs-error="message"></span>
+            </div>
+            <input type="hidden" name="_subject" value="Message depuis pierrolaloune.github.io (FR)">
+            <button class="send" type="submit" data-fs-submit-btn>Envoyer le message</button>
+          </form>
+        </div>
+
+        <div class="contact-side">
+          <div class="line">
+            <div class="k">E-mail professionnel</div>
+            <div class="v"><a href="mailto:pierre.bouchet@utoulouse.fr">pierre.bouchet@utoulouse.fr</a></div>
+          </div>
+          <div class="line">
+            <div class="k">E-mail personnel</div>
+            <div class="v"><a href="mailto:pierrebdef@gmail.com">pierrebdef@gmail.com</a></div>
+          </div>
+          <div class="line">
+            <div class="k">Laboratoire</div>
+            <div class="v">CRBE &mdash; Université Toulouse III<br>118 route de Narbonne, 31062 Toulouse, France</div>
+          </div>
+          <div class="line">
+            <div class="k">Ailleurs</div>
+            <div class="v"><a href="https://bsky.app/profile/pbouchet.bsky.social">Bluesky</a> &middot;
+              <a href="https://www.linkedin.com/in/pierrebouchetprofile/">LinkedIn</a> &middot;
+              <a href="https://github.com/pierrolaloune">GitHub</a></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  {% include footer.html %}
+  <script>
+    window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+    formspree('initForm', { formElement: '#contact-form', formId: 'xljrbwzr' });
+  </script>
+  <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+  <script src="/assets/js/main.js"></script>
+</body>
+
+</html>

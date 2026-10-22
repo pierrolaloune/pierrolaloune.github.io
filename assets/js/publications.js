@@ -7,7 +7,8 @@
      date      "YYYY-MM-DD"  publication date, used for sorting
      title, authors, journal, volume
      doi       without https://doi.org/
-     pdf       path to a file in /papers
+     pdf       path to a file in /papers (starting with "/" so it also
+               works from the French pages in /fr/)
      code      code repository (GitHub, Zenodo...)
      codeAndData  true when the code repository also holds the data:
                the button then reads "Code & Data"
@@ -16,6 +17,7 @@
      image     featured image in /images
      summary   a few sentences, shown on the "New paper" card of the
                home page
+     summary_fr, imageAlt_fr   French versions, used on the /fr/ pages
      scholar   your Google Scholar link for this paper; when absent the
                button runs a Google Scholar search on the exact title,
                which starts working as soon as Scholar indexes the paper.
@@ -30,13 +32,15 @@ window.PUBLICATIONS = [
     journal: "Nature Communications",
     volume: "17, 10697",
     doi: "10.1038/s41467-026-78568-9",
-    pdf: "papers/Bouchet2026_NatCommun.pdf",
+    pdf: "/papers/Bouchet2026_NatCommun.pdf",
     code: "https://github.com/pierrolaloune/FishUsage",
     codeAndData: true,
     behind: "https://communities.springernature.com/posts/guppies-pikes-and-sturgeons-why-the-fishes-we-use-are-rarely-ordinary?channel_id=behind-the-paper",
-    image: "images/pub_bouchet2026.webp",
+    image: "/images/pub_bouchet2026.webp",
     imageAlt: "Freshwater fishes used by humans: fish markets and an aquarium",
-    summary: "Food, fish farming, angling or aquaria: humans use about a quarter of the world's freshwater fish species. In a new open-access paper in Nature Communications, we show with almost 9,000 species that each type of use targets its own body plans, that aquaculture and game fishing favour morphologically original species, and that losing the threatened ones would erode the global diversity of fish forms four times more than expected by chance."
+    imageAlt_fr: "Poissons d'eau douce utilisés par les humains : marchés aux poissons et aquarium",
+    summary: "Food, fish farming, angling or aquaria: humans use about a quarter of the world's freshwater fish species. In a new open-access paper in Nature Communications, we show with almost 9,000 species that each type of use targets its own body plans, that aquaculture and game fishing favour morphologically original species, and that losing the threatened ones would erode the global diversity of fish forms four times more than expected by chance.",
+    summary_fr: "Alimentation, aquaculture, pêche de loisir ou aquariophilie : les humains utilisent environ un quart des espèces de poissons d'eau douce du monde. Dans un nouvel article en libre accès paru dans Nature Communications, nous montrons, sur près de 9 000 espèces, que chaque usage cible ses propres formes corporelles, que l'aquaculture et la pêche de loisir favorisent les espèces morphologiquement originales, et que la disparition des espèces menacées éroderait la diversité mondiale des formes de poissons quatre fois plus qu'attendu par hasard."
   }
 ];
 
