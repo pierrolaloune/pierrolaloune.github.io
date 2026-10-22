@@ -1,0 +1,22 @@
+<!-- Navigation shared by every page. Each page includes it with
+     active="<file name without .html>", which highlights the current tab. -->
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="index.html"><svg class="bear" viewBox="0 0 32 32" aria-hidden="true"><polygon class="f2" points="3.5,7.5 5,3.8 8.6,2.6 11.6,4.6 9.5,9.5"/><polygon class="f3" points="28.5,7.5 27,3.8 23.4,2.6 20.4,4.6 22.5,9.5"/><polygon class="fi" points="5.7,6.6 6.6,4.7 8.7,4.1 10.1,5.2 8.6,8"/><polygon class="fi" points="26.3,6.6 25.4,4.7 23.3,4.1 21.9,5.2 23.4,8"/><polygon class="f0" points="8.5,6.5 16,5.8 16,13"/><polygon class="f1" points="16,5.8 23.5,6.5 16,13"/><polygon class="f1" points="8.5,6.5 16,13 3.5,14.5"/><polygon class="f2" points="23.5,6.5 28.5,14.5 16,13"/><polygon class="f1" points="3.5,14.5 16,13 10.5,20 6.5,23"/><polygon class="f3" points="28.5,14.5 25.5,23 21.5,20 16,13"/><polygon class="f0" points="16,13 16,16.3 10.5,20"/><polygon class="f2" points="16,13 21.5,20 16,16.3"/><polygon class="fs" points="10.5,20 16,16.3 21.5,20 16,26"/><polygon class="f1" points="6.5,23 10.5,20 16,26 13,28.6"/><polygon class="f3" points="25.5,23 21.5,20 16,26 19,28.6"/><polygon class="f2" points="13,28.6 16,26 19,28.6"/><polygon class="fe" points="10.4,14.6 11.6,13.5 12.8,14.6 11.6,15.6"/><polygon class="fe" points="21.6,14.6 20.4,13.5 19.2,14.6 20.4,15.6"/><polygon class="fe" points="13.9,18.5 18.1,18.5 17.2,20.3 16,21.2 14.8,20.3"/></svg><span>Pierre Bouchet</span></a>
+      <nav class="tabs" aria-label="Main">
+        <a href="index.html"{% if include.active == "index" %} aria-current="page"{% endif %}>Home</a>
+        <a href="research.html"{% if include.active == "research" %} aria-current="page"{% endif %}>Research</a>
+        <a href="publications.html"{% if include.active == "publications" %} aria-current="page"{% endif %}>Publications</a>
+        <a href="communication.html"{% if include.active == "communication" %} aria-current="page"{% endif %}>Communication</a>
+        <a href="teaching.html"{% if include.active == "teaching" %} aria-current="page"{% endif %}>Teaching</a>
+        <a href="cv.html"{% if include.active == "cv" %} aria-current="page"{% endif %}>CV</a>
+        <a href="contact.html"{% if include.active == "contact" %} aria-current="page"{% endif %}>Contact</a>
+      </nav>
+      <div style="display:flex; align-items:center; gap:0.8rem;">
+        <button class="menu-btn" aria-expanded="false">Menu</button>
+        <button class="theme-toggle" aria-label="Switch colour theme">&#9686;</button>
+      </div>
+    </div>
+  </header>

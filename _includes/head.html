@@ -1,0 +1,32 @@
+<!-- Shared <head> content. Each page sets title and description in its
+     front matter (the block between --- lines at the top of the file). -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ page.title }}</title>
+  <meta name="description" content="{{ page.description }}" />
+  <link rel="canonical" href="https://pierrolaloune.github.io{{ page.url }}" />
+
+  <!-- Each page exists in English (/) and French (/fr/). -->
+  <link rel="alternate" hreflang="en" href="https://pierrolaloune.github.io{{ page.url | remove_first: "/fr" }}" />
+  <link rel="alternate" hreflang="fr" href="https://pierrolaloune.github.io/fr{{ page.url | remove_first: "/fr" }}" />
+  <link rel="alternate" hreflang="x-default" href="https://pierrolaloune.github.io{{ page.url | remove_first: "/fr" }}" />
+
+  <!-- Preview card when the page is shared (LinkedIn, Bluesky, Slack...) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Pierre Bouchet" />
+  <meta property="og:title" content="{{ page.social_title | default: page.title }}" />
+  <meta property="og:description" content="{{ page.description }}" />
+  <meta property="og:url" content="https://pierrolaloune.github.io{{ page.url }}" />
+  <meta property="og:image" content="https://pierrolaloune.github.io/images/og_profile.jpg" />
+  <meta property="og:image:alt" content="Portrait of Pierre Bouchet" />
+  <meta property="og:locale" content="{% if page.lang == "fr" %}fr_FR{% else %}en_GB{% endif %}" />
+  <meta name="twitter:card" content="summary" />
+
+  <!-- Content animated on scroll is only hidden when JavaScript runs. -->
+  <script>document.documentElement.classList.add("js");</script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600&family=Manrope:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpolygon fill='%23D1943A' stroke='%23D1943A' stroke-width='.25' stroke-linejoin='round' points='3.5,7.5 5,3.8 8.6,2.6 11.6,4.6 9.5,9.5'/%3E%3Cpolygon fill='%23A6762E' stroke='%23A6762E' stroke-width='.25' stroke-linejoin='round' points='28.5,7.5 27,3.8 23.4,2.6 20.4,4.6 22.5,9.5'/%3E%3Cpolygon fill='%231A1B1F' fill-opacity='.35' stroke-opacity='0' stroke='%231A1B1F' stroke-width='.25' stroke-linejoin='round' points='5.7,6.6 6.6,4.7 8.7,4.1 10.1,5.2 8.6,8'/%3E%3Cpolygon fill='%231A1B1F' fill-opacity='.35' stroke-opacity='0' stroke='%231A1B1F' stroke-width='.25' stroke-linejoin='round' points='26.3,6.6 25.4,4.7 23.3,4.1 21.9,5.2 23.4,8'/%3E%3Cpolygon fill='%23FFCB7E' stroke='%23FFCB7E' stroke-width='.25' stroke-linejoin='round' points='8.5,6.5 16,5.8 16,13'/%3E%3Cpolygon fill='%23FFB547' stroke='%23FFB547' stroke-width='.25' stroke-linejoin='round' points='16,5.8 23.5,6.5 16,13'/%3E%3Cpolygon fill='%23FFB547' stroke='%23FFB547' stroke-width='.25' stroke-linejoin='round' points='8.5,6.5 16,13 3.5,14.5'/%3E%3Cpolygon fill='%23D1943A' stroke='%23D1943A' stroke-width='.25' stroke-linejoin='round' points='23.5,6.5 28.5,14.5 16,13'/%3E%3Cpolygon fill='%23FFB547' stroke='%23FFB547' stroke-width='.25' stroke-linejoin='round' points='3.5,14.5 16,13 10.5,20 6.5,23'/%3E%3Cpolygon fill='%23A6762E' stroke='%23A6762E' stroke-width='.25' stroke-linejoin='round' points='28.5,14.5 25.5,23 21.5,20 16,13'/%3E%3Cpolygon fill='%23FFCB7E' stroke='%23FFCB7E' stroke-width='.25' stroke-linejoin='round' points='16,13 16,16.3 10.5,20'/%3E%3Cpolygon fill='%23D1943A' stroke='%23D1943A' stroke-width='.25' stroke-linejoin='round' points='16,13 21.5,20 16,16.3'/%3E%3Cpolygon fill='%23FFDBA8' stroke='%23FFDBA8' stroke-width='.25' stroke-linejoin='round' points='10.5,20 16,16.3 21.5,20 16,26'/%3E%3Cpolygon fill='%23FFB547' stroke='%23FFB547' stroke-width='.25' stroke-linejoin='round' points='6.5,23 10.5,20 16,26 13,28.6'/%3E%3Cpolygon fill='%23A6762E' stroke='%23A6762E' stroke-width='.25' stroke-linejoin='round' points='25.5,23 21.5,20 16,26 19,28.6'/%3E%3Cpolygon fill='%23D1943A' stroke='%23D1943A' stroke-width='.25' stroke-linejoin='round' points='13,28.6 16,26 19,28.6'/%3E%3Cpolygon fill='%231A1B1F' stroke='%231A1B1F' stroke-width='.25' stroke-linejoin='round' points='10.4,14.6 11.6,13.5 12.8,14.6 11.6,15.6'/%3E%3Cpolygon fill='%231A1B1F' stroke='%231A1B1F' stroke-width='.25' stroke-linejoin='round' points='21.6,14.6 20.4,13.5 19.2,14.6 20.4,15.6'/%3E%3Cpolygon fill='%231A1B1F' stroke='%231A1B1F' stroke-width='.25' stroke-linejoin='round' points='13.9,18.5 18.1,18.5 17.2,20.3 16,21.2 14.8,20.3'/%3E%3C/svg%3E">
