@@ -597,6 +597,16 @@ main .section:last-of-type::after { display: none; }
    CV page — timeline
    ========================================================= */
 
+.cv-download {
+  display: inline-flex; align-items: center; gap: 0.55rem; margin-top: 1.8rem;
+  font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase;
+  text-decoration: none; color: var(--on-accent); background: var(--orange);
+  border: 1px solid var(--orange); border-radius: 999px; padding: 0.7rem 1.3rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.cv-download:hover { transform: translateY(-2px); box-shadow: 0 10px 24px -12px var(--orange); }
+.cv-download[hidden] { display: none; }
+
 .tl { position: relative; padding-left: 1.6rem; }
 .tl::before {
   content: ""; position: absolute; left: 4px; top: 0.6rem; bottom: 0.6rem;

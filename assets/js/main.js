@@ -156,6 +156,7 @@
     if (p.pdf) l.push('<a href="' + p.pdf + '" target="_blank" rel="noopener">PDF</a>');
     if (p.code) l.push('<a href="' + p.code + '" target="_blank" rel="noopener">' + (p.codeAndData ? "Code &amp; Data" : "Code") + "</a>");
     if (p.data) l.push('<a href="' + p.data + '" target="_blank" rel="noopener">Data</a>');
+    if (p.behind) l.push('<a href="' + p.behind + '" target="_blank" rel="noopener">Behind the paper</a>');
     l.push('<a href="' + scholar + '" target="_blank" rel="noopener">Google Scholar</a>');
     return '<div class="pub-links">' + l.join("") + "</div>";
   }
@@ -277,6 +278,35 @@
     }).join("");
   }
 
+  /* Manuscripts not published yet (window.IN_PROGRESS). */
+  var wip = document.getElementById("in-progress");
+  var WIP = window.IN_PROGRESS || [];
+  if (wip) {
+    if (!WIP.length) {
+      wip.closest("section").hidden = true;
+    } else {
+      wip.innerHTML = WIP.map(function (p) {
+        return '<article class="pub">' +
+                 '<div class="yr">' + (p.year || "") + "</div>" +
+                 "<div>" +
+                   '<span class="tag">' + (p.status || "In progress") + "</span>" +
+                   "<h3>" + p.title + "</h3>" +
+                   '<p class="authors">' + p.authors + "</p>" +
+                   (p.journal ? '<p class="venue">' + p.journal + "</p>" : "") +
+                 "</div>" +
+               "</article>";
+      }).join("");
+    }
+  }
+
+  /* Links marked data-needs-file are hidden until their file exists. */
+  document.querySelectorAll("[data-needs-file]").forEach(function (a) {
+    a.hidden = true;
+    fetch(a.getAttribute("href"), { method: "HEAD" })
+      .then(function (r) { if (r.ok) a.hidden = false; })
+      .catch(function () {});
+  });
+
   /* ---- Publications pulled from ORCID -----------------------------
      The public ORCID API needs no key. Works you register on your ORCID
      record appear here automatically, newest first. Papers already in
@@ -307,7 +337,7 @@
         }).sort(function (a, b) { return (b.year || 0) - (a.year || 0); });
 
         if (!items.length) {
-          box.innerHTML = "";
+          box.closest("section").hidden = true;
           return;
         }
 
@@ -321,7 +351,7 @@
                  links + "</div></article>";
         }).join("");
       })
-      .catch(function () { box.innerHTML = ""; });
+      .catch(function () { box.closest("section").hidden = true; });
   }
 
   /* ---- Topographic background --------------------------------------

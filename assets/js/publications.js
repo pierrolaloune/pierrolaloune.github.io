@@ -12,6 +12,7 @@
      codeAndData  true when the code repository also holds the data:
                the button then reads "Code & Data"
      data      data archive
+     behind    "Behind the paper" blog post (Springer Nature Communities...)
      image     featured image in /images
      summary   a few sentences, shown on the "New paper" card of the
                home page
@@ -32,8 +33,36 @@ window.PUBLICATIONS = [
     pdf: "papers/Bouchet2026_NatCommun.pdf",
     code: "https://github.com/pierrolaloune/FishUsage",
     codeAndData: true,
+    behind: "https://communities.springernature.com/posts/guppies-pikes-and-sturgeons-why-the-fishes-we-use-are-rarely-ordinary?channel_id=behind-the-paper",
     image: "images/pub_bouchet2026.webp",
     imageAlt: "Freshwater fishes used by humans: fish markets and an aquarium",
     summary: "Food, fish farming, angling or aquaria: humans use about a quarter of the world's freshwater fish species. In a new open-access paper in Nature Communications, we show with almost 9,000 species that each type of use targets its own body plans, that aquaculture and game fishing favour morphologically original species, and that losing the threatened ones would erode the global diversity of fish forms four times more than expected by chance."
+  }
+];
+
+/* ---- Work in progress ----------------------------------------------
+   Manuscripts not published yet. They appear in an "In progress"
+   section of the Publications page (hidden while the list is empty)
+   and never in the "New paper" highlight. Once a paper is out, move
+   it to the list above.
+
+   Fields:
+     title, authors
+     status    "In preparation", "Submitted", "In review"...
+     year      optional, shown in the left column
+     journal   optional, e.g. the journal it is submitted to
+
+   Example:
+   {
+     title: "Title of the manuscript",
+     authors: "<strong>Bouchet, P.</strong>, Brosse, S. &amp; Toussaint, A.",
+     status: "In preparation"
+   } */
+
+window.IN_PROGRESS = [
+  {
+    title: "Beyond a common core, humans exploit regionally irreplaceable morphologies of freshwater fishes",
+    authors: "<strong>Bouchet, P.</strong>, Toussaint, A. &amp; Brosse, S.",
+    status: "In preparation"
   }
 ];

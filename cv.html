@@ -40,7 +40,17 @@
 
     <section class="page-head">
       <div class="wrap head-split">
-        <h1>CV</h1>
+        <div>
+          <h1>CV</h1>
+          <p class="lede">
+            I am a young scientist trying to bring macroecology, conservation and geography together.
+          </p>
+          <!-- Put the PDF at papers/CV_Pierre_Bouchet.pdf. The button stays
+               hidden as long as that file is missing. -->
+          <a class="cv-download" href="papers/CV_Pierre_Bouchet.pdf" download data-needs-file>
+            <span aria-hidden="true">&darr;</span> Download CV (PDF)
+          </a>
+        </div>
         <!-- One of the profile_*.webp files is drawn at random on each visit. -->
         <figure class="frame-fig tall">
           <img id="hero-photo" src="images/profile_1.webp" width="1280" height="1600" fetchpriority="high" alt="Pierre Bouchet" />
@@ -116,6 +126,34 @@
             <p class="tl-where">IRD <span>&middot; Bondy, France</span></p>
             <p class="tl-what">Microbial communities in Technosols.</p>
             <div class="tl-tags"><b>DNA sequencing</b><b>qPCR</b><b>R</b></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- EDUCATION ----------
+         Same blocks as the experience timeline, most recent first. -->
+    <section class="section reveal">
+      <div class="wrap">
+        <div class="section-head"><h2>Education</h2></div>
+        <div class="tl">
+          <article class="tl-item">
+            <span class="tl-when">2022 &mdash; 2024</span>
+            <h3>Master in Evolutionary and Functional Ecology (EEVEF)</h3>
+            <p class="tl-where">Mus&eacute;um national d'Histoire naturelle <span>&middot; Paris, France</span></p>
+            <p class="tl-what">Biogeography and Macroecology track (BIME).</p>
+          </article>
+          <article class="tl-item">
+            <span class="tl-when">2020 &mdash; 2022</span>
+            <h3>Bachelor in Geography</h3>
+            <p class="tl-where">Jean Monnet University <span>&middot; Saint-&Eacute;tienne, France</span></p>
+            <p class="tl-what">Spatial planning and environment.</p>
+          </article>
+          <article class="tl-item">
+            <span class="tl-when">2018 &mdash; 2020</span>
+            <h3>Bachelor in Biology</h3>
+            <p class="tl-where">Jean Monnet University <span>&middot; Saint-&Eacute;tienne, France</span></p>
+            <p class="tl-what">Biology of organisms and populations (BOP).</p>
           </article>
         </div>
       </div>
