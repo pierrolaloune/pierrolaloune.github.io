@@ -274,7 +274,8 @@
     return "<h3>" + (url ? '<a href="' + url + '" target="_blank" rel="noopener">' + title + "</a>" : title) + "</h3>";
   }
 
-  /* The summary lives on the home page; here, just the paper. */
+  /* The summary lives on the home page; here, just the paper, with the
+     first page of its PDF (nothing if there is no PDF or it cannot be drawn). */
   var mine = document.getElementById("my-pubs");
   if (mine) {
     mine.innerHTML = PUBS.map(function (p) {
@@ -286,9 +287,70 @@
                  venue(p) +
                  pubLinks(p) +
                "</div>" +
-               (p.image ? '<figure class="pub-img"><img src="' + p.image + '" alt="' + imgAlt(p) + '" loading="lazy"></figure>' : "") +
+               (p.pdf ? '<a class="pub-img pub-page" href="' + p.pdf + '" target="_blank" rel="noopener" aria-label="' +
+                        t("Open the PDF", "Ouvrir le PDF") + '"><img alt="' +
+                        t("First page of the article", "Premi&egrave;re page de l&rsquo;article") + '"></a>' : "") +
              "</article>";
     }).join("");
+
+    mine.querySelectorAll(".pub-page").forEach(function (a) {
+      var img = a.querySelector("img");
+      pdfCover(a.getAttribute("href")).then(function (src) { img.src = src; }, function () { a.remove(); });
+    });
+  }
+
+  /* ---- Year tabs and keyword search above the papers ---------------
+     One tab per publication year, newest first. Typing in the search box
+     looks through every year (title, authors, journal, summaries and the
+     optional "keywords" field); clearing it returns to the selected year.
+     Accents and case are ignored, and every word typed must match. */
+  function plain(s) {
+    return (s || "").replace(/<[^>]*>/g, " ").replace(/&[a-z]+;/g, " ")
+      .toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+  }
+  var yearBox = document.querySelector(".year-tabs");
+  var search = document.querySelector(".pub-search");
+  if (mine && yearBox) {
+    var rows = mine.querySelectorAll(".pub");
+    var yearOf = function (p) { return (p.date || "").slice(0, 4); };
+    var hay = PUBS.map(function (p) {
+      return plain([p.title, p.authors, p.journal, p.volume, yearOf(p), p.summary, p.summary_fr, p.keywords].join(" "));
+    });
+    var years = PUBS.map(yearOf).filter(function (y, i, all) { return y && all.indexOf(y) === i; });
+    var year = years[0];
+
+    yearBox.innerHTML = years.map(function (y) {
+      return '<button role="tab" data-year="' + y + '">' + y + "</button>";
+    }).join("");
+    mine.insertAdjacentHTML("beforeend", '<p class="pub-none" hidden>' +
+      t("No paper matches this search.", "Aucun article ne correspond &agrave; cette recherche.") + "</p>");
+    var none = mine.querySelector(".pub-none");
+
+    var applyFilter = function () {
+      var words = plain(search ? search.value : "").split(/\s+/).filter(Boolean);
+      var shown = 0;
+      rows.forEach(function (row, i) {
+        var ok = words.length
+          ? words.every(function (w) { return hay[i].indexOf(w) !== -1; })
+          : yearOf(PUBS[i]) === year;
+        row.hidden = !ok;
+        if (ok) shown++;
+      });
+      yearBox.querySelectorAll("button").forEach(function (b) {
+        b.setAttribute("aria-selected", !words.length && b.getAttribute("data-year") === year ? "true" : "false");
+      });
+      none.hidden = shown > 0;
+    };
+
+    yearBox.addEventListener("click", function (e) {
+      var b = e.target.closest("button");
+      if (!b) return;
+      year = b.getAttribute("data-year");
+      if (search) search.value = "";
+      applyFilter();
+    });
+    if (search) search.addEventListener("input", applyFilter);
+    applyFilter();
   }
 
   /* Manuscripts not published yet (window.IN_PROGRESS). The usual
@@ -374,17 +436,13 @@
   }
 
   /* ---- Topographic background --------------------------------------
-     A contour map, drawn from a noise "terrain", sits behind the page
-     and drifts slowly as you scroll (parallax).
-     Under the mouse, the contour line at that altitude is faintly
-     tinted. With reduced motion asked, only the still map is drawn.
+     A still contour map, drawn from a noise "terrain", sits behind the
+     page like the grid of a field notebook.
      Tuning: SCALE size of the relief, STEP spacing of the contours,
-     INDEX every n-th line is drawn heavier, PARALLAX scroll drift,
-     LINE / MAJOR / HOVER opacity of the lines. */
+     INDEX every n-th line is drawn heavier, LINE / MAJOR opacity. */
   (function () {
-  var SCALE = 460, STEP = 0.042, INDEX = 5, CELL = 12, PARALLAX = 0.3;
-  var LINE = 0.032, MAJOR = 0.07, HOVER = 0.13;
-  var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var SCALE = 460, STEP = 0.042, INDEX = 5, CELL = 12;
+  var LINE = 0.026, MAJOR = 0.05;
 
   /* Classic Perlin noise with a fixed seed, so the map never changes. */
   var perm = new Uint8Array(512);
@@ -421,25 +479,18 @@
     return c;
   };
   var tc = makeCanvas("topo-canvas"), tx = tc.getContext("2d");
-  var tdpr = 1, W = 0, H = 0, ink, amber, paths = [];
-  var offY = 0, base = 0, hover = -1, glow = {}, busy = false;
+  var tdpr = 1, W = 0, H = 0, ink, paths = [];
 
   var readInk = function () {
-    var css = getComputedStyle(document.documentElement);
-    ink = css.getPropertyValue("--ink").trim();
-    amber = css.getPropertyValue("--orange").trim();
+    ink = getComputedStyle(document.documentElement).getPropertyValue("--ink").trim();
   };
 
-  /* Performance: the map is drawn once on a canvas twice the height of
-     the screen (half a screen above, half below). Scrolling only slides
-     that canvas; it is redrawn when the slide nears its edge, i.e.
-     about every 1.5 screens of map, and never while idle. */
-  var mapTop = function () { return base - H / 2; };     // map y of canvas row 0
+  /* The map is drawn once, on a fixed canvas a little taller than the
+     screen (phones change the height when the address bar moves). */
 
   /* Marching squares: one Path2D per contour level. */
   function build() {
-    base = offY;
-    var cols = Math.ceil(W / CELL) + 1, rows = Math.ceil(2 * H / CELL) + 1, top = mapTop();
+    var cols = Math.ceil(W / CELL) + 1, rows = Math.ceil((H + 200) / CELL) + 1, top = 0;
     var g = new Float32Array(cols * rows);
     for (var j = 0; j < rows; j++)
       for (var i = 0; i < cols; i++) g[j * cols + i] = height(i * CELL, j * CELL + top);
@@ -465,54 +516,27 @@
         }
       }
     }
-    slide();
     paint();
-  }
-
-  function slide() {
-    tc.style.transform = "translate3d(0," + (base - offY) + "px,0)";
   }
 
   function paint() {
     tx.setTransform(tdpr, 0, 0, tdpr, 0, 0);
-    tx.clearRect(0, 0, W, 2 * H);
+    tx.clearRect(0, 0, W, H + 200);
     tx.strokeStyle = ink;
     paths.forEach(function (P, l) {
       var major = l % INDEX === 0;
       tx.globalAlpha = major ? MAJOR : LINE;
-      tx.lineWidth = major ? 1 : 0.6;
+      tx.lineWidth = major ? 0.9 : 0.5;
       tx.stroke(P);
     });
-    tx.strokeStyle = amber;
-    tx.lineWidth = 0.8;
-    for (var l in glow) {
-      if (glow[l] < 0.01 || !paths[l]) continue;
-      tx.globalAlpha = glow[l] * HOVER;
-      tx.stroke(paths[l]);
-    }
     tx.globalAlpha = 1;
   }
-
-  function tick() {
-    var moving = false;
-    for (var l in glow) {
-      var target = +l === hover ? 1 : 0;
-      glow[l] += (target - glow[l]) * 0.12;
-      if (Math.abs(target - glow[l]) > 0.01) moving = true;
-      else if (!target) delete glow[l];
-    }
-    paint();
-    if (moving) requestAnimationFrame(tick);
-    else busy = false;
-  }
-  function kick() { if (!busy) { busy = true; requestAnimationFrame(tick); } }
 
   var tsize = function () {
     tdpr = Math.min(window.devicePixelRatio || 1, 1.5);
     W = innerWidth; H = innerHeight;
-    tc.width = W * tdpr; tc.height = 2 * H * tdpr;
-    tc.style.width = W + "px"; tc.style.height = 2 * H + "px"; tc.style.top = -H / 2 + "px";
-    offY = still ? 0 : window.scrollY * PARALLAX;
+    tc.width = W * tdpr; tc.height = (H + 200) * tdpr;
+    tc.style.width = W + "px"; tc.style.height = (H + 200) + "px";
     build();
   };
 
@@ -529,34 +553,6 @@
   });
   new MutationObserver(function () { readInk(); paint(); })
     .observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-
-  if (!still) {
-    var scrollQueued = false;
-    window.addEventListener("scroll", function () {
-      if (scrollQueued) return;
-      scrollQueued = true;
-      requestAnimationFrame(function () {
-        scrollQueued = false;
-        offY = window.scrollY * PARALLAX;
-        if (Math.abs(offY - base) > H * 0.45) build(); else slide();
-      });
-    }, { passive: true });
-
-    var CARDS = ".np-card, .teach, .pub-rich";
-    document.addEventListener("pointermove", function (e) {
-      if (e.pointerType === "mouse") {
-        var lev = Math.round(height(e.clientX, e.clientY + offY) / STEP);
-        if (lev !== hover) { hover = lev; if (!(lev in glow)) glow[lev] = 0; kick(); }
-      }
-      var card = e.target.closest && e.target.closest(CARDS);
-      if (card) {
-        var r = card.getBoundingClientRect();
-        card.style.setProperty("--mx", (e.clientX - r.left) + "px");
-        card.style.setProperty("--my", (e.clientY - r.top) + "px");
-      }
-    }, { passive: true });
-    document.documentElement.addEventListener("mouseleave", function () { hover = -1; kick(); });
-  }
 
   })();
 

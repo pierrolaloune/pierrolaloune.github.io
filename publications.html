@@ -26,10 +26,14 @@ description: "Publications, work in progress and conference talks by Pierre Bouc
 
     <!-- ---------- MY PAPERS ----------
          Generated from assets/js/publications.js (PDF, code, data,
-         Google Scholar and featured image). Add new papers there. -->
+         Google Scholar and featured image). Add new papers there.
+         The year tabs are built from the papers' dates. -->
     <section class="section reveal">
       <div class="wrap">
-        <div class="section-head"><h2>Published</h2></div>
+        <div class="pub-tools">
+          <div class="year-tabs" role="tablist" aria-label="Years"></div>
+          <input class="pub-search" type="search" placeholder="Search by keyword…" aria-label="Search papers by keyword" />
+        </div>
         <div id="my-pubs"></div>
       </div>
     </section>

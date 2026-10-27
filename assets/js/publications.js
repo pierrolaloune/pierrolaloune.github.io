@@ -18,6 +18,8 @@
      summary   a few sentences, shown on the "New paper" card of the
                home page
      summary_fr, imageAlt_fr   French versions, used on the /fr/ pages
+     keywords  extra words for the search box of the Publications page
+               (never shown), e.g. "fish, traits, aquaculture, poissons"
      scholar   your Google Scholar link for this paper; when absent the
                button runs a Google Scholar search on the exact title,
                which starts working as soon as Scholar indexes the paper.
