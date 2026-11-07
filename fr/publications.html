@@ -26,10 +26,14 @@ description: "Publications, travaux en cours et communications en colloque de Pi
     </section>
 
     <!-- ---------- MES ARTICLES ----------
-         Générés depuis assets/js/publications.js. Les titres restent en anglais. -->
+         Générés depuis assets/js/publications.js. Les titres restent en anglais.
+         Les onglets d'année sont construits à partir des dates des articles. -->
     <section class="section reveal">
       <div class="wrap">
-        <div class="section-head"><h2>Publiés</h2></div>
+        <div class="pub-tools">
+          <div class="year-tabs" role="tablist" aria-label="Années"></div>
+          <input class="pub-search" type="search" placeholder="Rechercher par mot-clé…" aria-label="Rechercher un article par mot-clé" />
+        </div>
         <div id="my-pubs"></div>
       </div>
     </section>
