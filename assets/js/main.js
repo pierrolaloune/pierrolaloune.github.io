@@ -162,6 +162,9 @@
     if (p.code) l.push('<a href="' + p.code + '" target="_blank" rel="noopener">' + (p.codeAndData ? t("Code &amp; Data", "Code &amp; donn&eacute;es") : "Code") + "</a>");
     if (p.data) l.push('<a href="' + p.data + '" target="_blank" rel="noopener">' + t("Data", "Donn&eacute;es") + "</a>");
     if (p.behind) l.push('<a href="' + p.behind + '" target="_blank" rel="noopener">Behind the paper</a>');
+    (p.press || []).forEach(function (r) {
+      l.push('<a href="' + r.url + '" target="_blank" rel="noopener">' + t(r.label, r.label_fr || r.label) + "</a>");
+    });
     l.push('<a href="' + scholar + '" target="_blank" rel="noopener">Google Scholar</a>');
     return '<div class="pub-links">' + l.join("") + "</div>";
   }

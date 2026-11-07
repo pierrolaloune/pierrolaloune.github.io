@@ -14,6 +14,8 @@
                the button then reads "Code & Data"
      data      data archive
      behind    "Behind the paper" blog post (Springer Nature Communities...)
+     press     press releases, one button each:
+               [{ label: "CNRS press release", label_fr: "Communiqué de presse CNRS", url: "..." }]
      image     featured image in /images
      summary   a few sentences, shown on the "New paper" card of the
                home page
@@ -36,6 +38,10 @@ window.PUBLICATIONS = [
     code: "https://github.com/pierrolaloune/FishUsage",
     codeAndData: true,
     behind: "https://communities.springernature.com/posts/guppies-pikes-and-sturgeons-why-the-fishes-we-use-are-rarely-ordinary?channel_id=behind-the-paper",
+    press: [
+      { label: "CNRS press release", label_fr: "Communiqué de presse CNRS", url: "https://www.occitanie-ouest.cnrs.fr/fr/cnrsinfo/la-selection-humaine-menace-les-poissons-deau-douce-les-plus-originaux" },
+      { label: "CRBE press release", label_fr: "Communiqué de presse CRBE", url: "https://crbe.cnrs.fr/la-selection-humaine-menace-les-poissons-deau-douce-les-plus-originaux/" }
+    ],
     image: "/images/pub_bouchet2026.webp",
     imageAlt: "Freshwater fishes used by humans: fish markets and an aquarium",
     imageAlt_fr: "Poissons d'eau douce utilisés par les humains : marchés aux poissons et aquarium",
